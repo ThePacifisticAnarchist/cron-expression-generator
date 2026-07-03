@@ -26,7 +26,7 @@
       <button 
         type="button" 
         id="btn-mode-5" 
-        class="px-3 py-1.5 text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-white bg-hairline-strong/60"
+        class="px-2 sm:px-3 py-1.5 text-[10px] sm:text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-white bg-hairline-strong/60"
         role="tab"
         aria-selected="true"
       >
@@ -36,7 +36,7 @@
       <button 
         type="button" 
         id="btn-mode-6-seconds" 
-        class="px-3 py-1.5 text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-mute hover:text-white"
+        class="px-2 sm:px-3 py-1.5 text-[10px] sm:text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-mute hover:text-white"
         role="tab"
         aria-selected="false"
       >
@@ -46,12 +46,22 @@
       <button 
         type="button" 
         id="btn-mode-6-year" 
-        class="px-3 py-1.5 text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-mute hover:text-white"
+        class="px-2 sm:px-3 py-1.5 text-[10px] sm:text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-mute hover:text-white"
         role="tab"
         aria-selected="false"
       >
         <span class="hidden sm:inline">6-Field (AWS/Year)</span>
         <span class="inline sm:hidden">6-Year</span>
+      </button>
+      <button 
+        type="button" 
+        id="btn-mode-7-quartz" 
+        class="px-2 sm:px-3 py-1.5 text-[10px] sm:text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-mute hover:text-white"
+        role="tab"
+        aria-selected="false"
+      >
+        <span class="hidden sm:inline">7-Field (Quartz)</span>
+        <span class="inline sm:hidden">7-Quartz</span>
       </button>
     </div>
   </div>
@@ -242,10 +252,14 @@
       <div class="space-y-3">
         <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
           <span class="text-white">Day of Month Presets</span>
-          <span class="text-[10px] text-mute normal-case font-medium">allowed: 1-31 , - * /</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 1-31 , - * / ? L W</span>
         </div>
         <div class="flex flex-wrap gap-1.5 pt-1">
           <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="?">? (no specific value)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="L">L (last day)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="LW">LW (last weekday)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="15W">15W (nearest weekday to 15th)</button>
           <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1">1 (1st day)</button>
           <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="15">15 (mid-month)</button>
           <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/5">*/5 (every 5 days)</button>
@@ -276,10 +290,13 @@
       <div class="space-y-3">
         <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
           <span class="text-white">Day of Week Presets</span>
-          <span class="text-[10px] text-mute normal-case font-medium">allowed: 0-6 or Sun-Sat , - * /</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 0-6 or Sun-Sat , - * / ? L #</span>
         </div>
         <div class="flex flex-wrap gap-1.5 pt-1">
           <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="?">? (no specific value)</button>
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="6L">6L (last Friday of month)</button>
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="6#3">6#3 (3rd Friday of month)</button>
           <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1-5">1-5 (weekdays)</button>
           <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="0,6">0,6 (weekends)</button>
           <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1">1 (Monday)</button>
@@ -309,10 +326,53 @@
 
   <!-- 5. Centered Next 5 Run Times Display -->
   <section class="max-w-2xl mx-auto card-elevation-1 bg-canvas-soft border border-hairline rounded-xl p-5" aria-label="Upcoming schedule execution list">
-    <h3 class="text-[10px] text-mute uppercase font-mono tracking-wider font-bold mb-3 border-b border-hairline pb-2">Upcoming Execution Schedule</h3>
+    <div class="flex items-center justify-between border-b border-hairline pb-2 mb-3">
+      <h3 class="text-[10px] text-mute uppercase font-mono tracking-wider font-bold">Upcoming Execution Schedule</h3>
+      <div class="flex items-center gap-1.5">
+        <label for="tz-select" class="font-mono text-[9px] text-mute uppercase font-bold text-[8px] sm:text-[9px]">Target Zone:</label>
+        <select id="tz-select" class="bg-canvas-soft-2 border border-hairline hover:border-hairline-strong text-white text-[9px] sm:text-[10px] font-mono rounded px-1.5 py-0.5 focus:outline-none transition">
+          <option value="UTC" selected>UTC (Server)</option>
+          <option value="Asia/Kolkata">IST (Asia/Kolkata)</option>
+          <option value="America/New_York">EST/EDT (New York)</option>
+          <option value="Europe/London">GMT/BST (London)</option>
+          <option value="Asia/Tokyo">JST (Tokyo)</option>
+          <option value="Australia/Sydney">AEST/AEDT (Sydney)</option>
+        </select>
+      </div>
+    </div>
     <ol id="next-runs-list" class="space-y-2 font-mono text-xs text-body tabular-nums">
       <!-- Dynamically populated runs -->
     </ol>
+  </section>
+
+  <!-- 5.5 Code Snippet Generator -->
+  <section class="max-w-2xl mx-auto card-elevation-1 bg-canvas-soft border border-hairline rounded-xl p-5" aria-label="Code snippet generation dashboard">
+    <div class="flex items-center justify-between border-b border-hairline pb-2 mb-4">
+      <h3 class="text-[10px] text-mute uppercase font-mono tracking-wider font-bold">Code Snippets</h3>
+      <div class="flex flex-wrap gap-1" id="snippet-tabs" role="tablist">
+        <button type="button" data-tab="spring" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded bg-hairline-strong text-white transition cursor-pointer" role="tab" aria-selected="true">Spring</button>
+        <button type="button" data-tab="quartz" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded text-mute hover:text-white transition cursor-pointer" role="tab" aria-selected="false">Quartz</button>
+        <button type="button" data-tab="k8s" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded text-mute hover:text-white transition cursor-pointer" role="tab" aria-selected="false">K8s</button>
+        <button type="button" data-tab="node" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded text-mute hover:text-white transition cursor-pointer" role="tab" aria-selected="false">Node.js</button>
+        <button type="button" data-tab="python" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded text-mute hover:text-white transition cursor-pointer" role="tab" aria-selected="false">Python</button>
+      </div>
+    </div>
+    <div class="relative bg-canvas border border-hairline rounded-lg p-3 overflow-x-auto shadow-inner group">
+      <button 
+        type="button" 
+        id="btn-copy-snippet" 
+        class="absolute top-2 right-2 text-mute hover:text-white p-1.5 hover:bg-canvas-soft border border-transparent hover:border-hairline rounded transition cursor-pointer animate-fade-in"
+        aria-label="Copy code snippet"
+      >
+        <svg id="copy-snippet-icon" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+        </svg>
+        <svg id="check-snippet-icon" class="w-3.5 h-3.5 text-emerald-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </button>
+      <pre class="text-[11px] text-body font-mono leading-relaxed select-all" id="snippet-code-box">Loading...</pre>
+    </div>
   </section>
 
   <!-- 6. Crontab Syntax Cheatsheet -->
@@ -337,6 +397,39 @@
     </div>
   </section>
 
+  <!-- 7. Searchable Enterprise Template Library -->
+  <section class="max-w-2xl mx-auto card-elevation-1 bg-canvas-soft border border-hairline rounded-xl p-5 scroll-mt-24 space-y-4" id="templates-section" aria-label="Enterprise schedule templates catalog">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-hairline pb-3 gap-3">
+      <div>
+        <h3 class="text-[10px] text-mute uppercase font-mono tracking-wider font-bold">Enterprise Templates Library</h3>
+        <p class="text-[10px] text-mute font-mono mt-0.5 normal-case">One-click standard configurations for developers</p>
+      </div>
+      
+      <!-- Search Input -->
+      <div class="relative w-full sm:w-64">
+        <input 
+          type="text" 
+          id="template-search" 
+          placeholder="Search templates..."
+          class="w-full bg-canvas-soft-2 border border-hairline hover:border-hairline-strong focus:border-link text-white rounded px-2.5 py-1 text-[11px] font-mono focus:outline-none transition placeholder:text-mute/50"
+        />
+      </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap gap-1.5" id="template-filters">
+      <button type="button" data-filter="all" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded bg-hairline-strong text-white cursor-pointer transition">All</button>
+      <button type="button" data-filter="devops" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded text-mute hover:text-white bg-canvas hover:bg-hairline-strong/30 cursor-pointer transition">DevOps</button>
+      <button type="button" data-filter="database" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded text-mute hover:text-white bg-canvas hover:bg-hairline-strong/30 cursor-pointer transition">Database</button>
+      <button type="button" data-filter="reports" class="px-2 py-0.5 text-[9px] font-mono font-medium rounded text-mute hover:text-white bg-canvas hover:bg-hairline-strong/30 cursor-pointer transition">Reports</button>
+    </div>
+
+    <!-- Templates Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="templates-grid">
+      <!-- Generated via JS dynamically -->
+    </div>
+  </section>
+
 </div>
 
 <script>
@@ -345,7 +438,7 @@
 
   // UI state object
   const state = {
-    mode: '5', // '5' | '6-seconds' | '6-year'
+    mode: '5', // '5' | '6-seconds' | '6-year' | '7-quartz'
     activeField: 'minute',
     second: { value: '*' },
     minute: { value: '*' },
@@ -393,6 +486,7 @@
     btnMode5: document.getElementById('btn-mode-5'),
     btnMode6Seconds: document.getElementById('btn-mode-6-seconds'),
     btnMode6Year: document.getElementById('btn-mode-6-year'),
+    btnMode7Quartz: document.getElementById('btn-mode-7-quartz'),
 
     // Outputs
     cronOutput: document.getElementById('cron-output'),
@@ -408,8 +502,10 @@
       return ['minute', 'hour', 'day', 'month', 'weekday'];
     } else if (state.mode === '6-seconds') {
       return ['second', 'minute', 'hour', 'day', 'month', 'weekday'];
-    } else {
+    } else if (state.mode === '6-year') {
       return ['minute', 'hour', 'day', 'month', 'weekday', 'year'];
+    } else { // '7-quartz'
+      return ['second', 'minute', 'hour', 'day', 'month', 'weekday', 'year'];
     }
   }
 
@@ -566,9 +662,14 @@
     state.mode = mode;
     
     // 1. Update active tab buttons style
-    const modes = ['5', '6-seconds', '6-year'];
+    const modes = ['5', '6-seconds', '6-year', '7-quartz'];
     modes.forEach(m => {
-      const btn = el[`btnMode${m === '5' ? '5' : (m === '6-seconds' ? '6Seconds' : '6Year')}`];
+      let btnName = 'btnMode5';
+      if (m === '6-seconds') btnName = 'btnMode6Seconds';
+      else if (m === '6-year') btnName = 'btnMode6Year';
+      else if (m === '7-quartz') btnName = 'btnMode7Quartz';
+      
+      const btn = el[btnName];
       if (btn) {
         if (m === mode) {
           btn.classList.remove('text-mute', 'hover:text-white');
@@ -583,11 +684,11 @@
     });
     
     // 2. Update layout grid columns class
+    el.expressionGrid.classList.remove('grid-cols-5', 'grid-cols-6', 'grid-cols-7');
+    el.labelsGrid.classList.remove('grid-cols-5', 'grid-cols-6', 'grid-cols-7');
+    
     if (mode === '5') {
-      el.expressionGrid.classList.remove('grid-cols-6');
       el.expressionGrid.classList.add('grid-cols-5');
-      
-      el.labelsGrid.classList.remove('grid-cols-6');
       el.labelsGrid.classList.add('grid-cols-5');
       
       // Hide unused inputs
@@ -595,24 +696,30 @@
       el.exprYear.classList.add('hidden');
       el.lblSecond.classList.add('hidden');
       el.lblYear.classList.add('hidden');
-    } else {
-      el.expressionGrid.classList.remove('grid-cols-5');
+    } else if (mode === '6-seconds') {
       el.expressionGrid.classList.add('grid-cols-6');
-      
-      el.labelsGrid.classList.remove('grid-cols-5');
       el.labelsGrid.classList.add('grid-cols-6');
       
-      if (mode === '6-seconds') {
-        el.exprSecond.classList.remove('hidden');
-        el.exprYear.classList.add('hidden');
-        el.lblSecond.classList.remove('hidden');
-        el.lblYear.classList.add('hidden');
-      } else {
-        el.exprSecond.classList.add('hidden');
-        el.exprYear.classList.remove('hidden');
-        el.lblSecond.classList.add('hidden');
-        el.lblYear.classList.remove('hidden');
-      }
+      el.exprSecond.classList.remove('hidden');
+      el.exprYear.classList.add('hidden');
+      el.lblSecond.classList.remove('hidden');
+      el.lblYear.classList.add('hidden');
+    } else if (mode === '6-year') {
+      el.expressionGrid.classList.add('grid-cols-6');
+      el.labelsGrid.classList.add('grid-cols-6');
+      
+      el.exprSecond.classList.add('hidden');
+      el.exprYear.classList.remove('hidden');
+      el.lblSecond.classList.add('hidden');
+      el.lblYear.classList.remove('hidden');
+    } else { // '7-quartz'
+      el.expressionGrid.classList.add('grid-cols-7');
+      el.labelsGrid.classList.add('grid-cols-7');
+      
+      el.exprSecond.classList.remove('hidden');
+      el.exprYear.classList.remove('hidden');
+      el.lblSecond.classList.remove('hidden');
+      el.lblYear.classList.remove('hidden');
     }
     
     // 3. Shift active field focus if current active field is now hidden
@@ -631,6 +738,7 @@
     if (el.btnMode5) el.btnMode5.addEventListener('click', () => setMode('5'));
     if (el.btnMode6Seconds) el.btnMode6Seconds.addEventListener('click', () => setMode('6-seconds'));
     if (el.btnMode6Year) el.btnMode6Year.addEventListener('click', () => setMode('6-year'));
+    if (el.btnMode7Quartz) el.btnMode7Quartz.addEventListener('click', () => setMode('7-quartz'));
   }
 
   // Format relative time helper
@@ -650,6 +758,52 @@
       return `in ${diffHours}&nbsp;${diffHours === 1 ? 'hr' : 'hrs'}`;
     } else {
       return `in ${diffDays}&nbsp;${diffDays === 1 ? 'day' : 'days'}`;
+    }
+  }
+
+  // Format date helper for specific timezone
+  function formatDateForTz(date, tz) {
+    if (tz === 'local') {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+    
+    try {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: tz,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+      
+      const parts = formatter.formatToParts(date);
+      const valOf = (type) => {
+        const found = parts.find(p => p.type === type);
+        return found ? found.value : '';
+      };
+      
+      const year = valOf('year');
+      const month = valOf('month');
+      const day = valOf('day');
+      const hour = valOf('hour');
+      const minute = valOf('minute');
+      const second = valOf('second');
+      
+      const cleanedHour = hour === '24' ? '00' : hour;
+      
+      return `${year}-${month}-${day} ${cleanedHour}:${minute}:${second}`;
+    } catch (e) {
+      console.error('Timezone formatting error', e);
+      return date.toISOString().replace('T', ' ').substring(0, 19);
     }
   }
 
@@ -674,7 +828,7 @@
       return;
     }
     
-    // 2. Next runs
+    // 2. Next runs & Dual Timezone display
     try {
       let evalExpression = expression;
       if (state.mode === '6-year') {
@@ -701,30 +855,37 @@
       const tSeconds = String(topDate.getSeconds()).padStart(2, '0');
       el.nextRunTime.textContent = `${tYear}-${tMonth}-${tDay} ${tHours}:${tMinutes}:${tSeconds}`;
       
+      // Get selected target timezone
+      const tzSelect = document.getElementById('tz-select');
+      const targetTz = tzSelect ? tzSelect.value : 'UTC';
+
       nextRuns.forEach((date, index) => {
         const li = document.createElement('li');
-        li.className = 'flex justify-between items-center py-1.5 border-b border-hairline last:border-b-0 gap-2';
+        li.className = 'flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 border-b border-hairline last:border-b-0 gap-1.5 sm:gap-2';
         
         const ordinals = ['1st Run', '2nd Run', '3rd Run', '4th Run', '5th Run'];
         
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-        const dateStr = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        const localStr = formatDateForTz(date, 'local');
+        const targetStr = formatDateForTz(date, targetTz);
+        const targetAbbr = date.toLocaleTimeString('en-US', { timeZone: targetTz, timeZoneName: 'short' }).split(' ').pop();
         
         const relativeStr = formatRelativeTime(date);
         
         li.innerHTML = `
           <span class="text-[10px] text-mute uppercase font-semibold shrink-0">${ordinals[index]}</span>
-          <span class="text-right text-white font-mono break-all leading-none tabular-nums text-[10px] sm:text-xs">
-            ${dateStr} <span class="text-[10px] text-link ml-1 bg-link/10 px-1 py-0.5 rounded border border-link/20">${relativeStr}</span>
-          </span>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-white font-mono text-[10px] sm:text-xs w-full sm:w-auto">
+            <span>Local: ${localStr}</span>
+            <span class="hidden sm:inline text-mute/30">|</span>
+            <span class="text-link font-medium">${targetAbbr}: ${targetStr}</span>
+          </div>
+          <span class="text-[9px] sm:text-[10px] text-link bg-link/10 px-1.5 py-0.5 rounded border border-link/20 shrink-0 self-end sm:self-auto leading-none">${relativeStr}</span>
         `;
         el.nextRunsList.appendChild(li);
       });
+
+      // Update code snippets dashboard
+      updateSnippets(expression);
+
     } catch (e) {
       el.nextRunTime.textContent = 'Error';
       el.nextRunsList.innerHTML = '<li class="text-rose-500 text-center py-2">Failed to calculate schedule runs</li>';
@@ -791,7 +952,7 @@
         targetMode = '6-seconds';
       }
     } else if (parts.length >= 7) {
-      targetMode = '6-year';
+      targetMode = '7-quartz';
     }
     
     setMode(targetMode);
@@ -811,6 +972,191 @@
     updateGenerator();
   }
 
+  // Code Snippets generator logic
+  const activeTabState = { tab: 'spring' };
+
+  function updateSnippets(expression) {
+    const codeBox = document.getElementById('snippet-code-box');
+    if (!codeBox) return;
+
+    const parts = expression.trim().split(/\s+/);
+    
+    let sec = '0', min = '*', hr = '*', dom = '*', mon = '*', dow = '*', yr = '*';
+    if (parts.length === 5) {
+      [min, hr, dom, mon, dow] = parts;
+    } else if (parts.length === 6) {
+      if (state.mode === '6-seconds') {
+        [sec, min, hr, dom, mon, dow] = parts;
+      } else {
+        [min, hr, dom, mon, dow, yr] = parts;
+      }
+    } else if (parts.length >= 7) {
+      [sec, min, hr, dom, mon, dow, yr] = parts;
+    }
+
+    let codeText = '';
+    const tab = activeTabState.tab;
+
+    if (tab === 'spring') {
+      codeText = `@Scheduled(cron = "${expression}")\npublic void executeTask() {\n    // Task logic goes here\n}`;
+    } else if (tab === 'quartz') {
+      codeText = `Trigger trigger = TriggerBuilder.newTrigger()\n    .withIdentity("myTrigger", "group1")\n    .withSchedule(CronScheduleBuilder.cronSchedule("${expression}"))\n    .build();`;
+    } else if (tab === 'k8s') {
+      let k8sCron = expression;
+      let note = '';
+      if (parts.length > 5) {
+        let fiveParts = [...parts];
+        if (state.mode === '6-seconds') {
+          fiveParts.shift();
+        } else if (state.mode === '6-year') {
+          fiveParts.pop();
+        } else if (state.mode === '7-quartz') {
+          fiveParts.shift();
+          fiveParts.pop();
+        }
+        k8sCron = fiveParts.join(' ');
+        note = `# Note: Kubernetes only supports standard 5-field cron. \n# Extracted 5-field equivalent:\n`;
+      }
+      codeText = `${note}apiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: my-cron-job\nspec:\n  schedule: "${k8sCron}"\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          containers:\n          - name: worker\n            image: busybox:1.35\n            command: ["/bin/sh", "-c", "echo task complete"]\n          restartPolicy: OnFailure`;
+    } else if (tab === 'node') {
+      codeText = `const cron = require('node-cron');\n\ncron.schedule('${expression}', () => {\n  console.log('Task executed successfully');\n});`;
+    } else if (tab === 'python') {
+      codeText = `# Using APScheduler:\nfrom apscheduler.schedulers.blocking import BlockingScheduler\n\nscheduler = BlockingScheduler()\nscheduler.add_job(my_job, 'cron', \n                  second='${sec}', minute='${min}', hour='${hr}', \n                  day='${dom}', month='${mon}', day_of_week='${dow}'${state.mode === '7-quartz' || state.mode === '6-year' ? `, year='${yr}'` : ''})\n\n# Or using Celery Beat:\n# crontab(minute='${min}', hour='${hr}', day_of_week='${dow}', day_of_month='${dom}', month_of_year='${mon}')`;
+    }
+
+    codeBox.textContent = codeText;
+  }
+
+  // Enterprise templates list
+  const templates = [
+    {
+      name: "Quarterly Database Audit",
+      description: "Runs at 03:00 AM on the 1st of January, April, July, and October.",
+      expression: "0 3 1 1,4,7,10 *",
+      category: "database"
+    },
+    {
+      name: "Hourly Cache Invalidation",
+      description: "Runs at minute 0 every hour.",
+      expression: "0 * * * *",
+      category: "devops"
+    },
+    {
+      name: "Every 10 Seconds Log Rotation",
+      description: "High-precision log rotation running every 10 seconds (Quartz/Spring).",
+      expression: "*/10 * * * * *",
+      category: "devops"
+    },
+    {
+      name: "End of Month Ledger Closure",
+      description: "Runs at 23:50 PM on the last day of every month.",
+      expression: "50 23 L * ?",
+      category: "reports"
+    },
+    {
+      name: "Nightly Database Backup",
+      description: "Runs at 02:00 AM every night.",
+      expression: "0 2 * * *",
+      category: "database"
+    },
+    {
+      name: "Weekly Financial Summary Report",
+      description: "Runs at 08:00 AM every Monday.",
+      expression: "0 8 * * 1",
+      category: "reports"
+    },
+    {
+      name: "AWS EventBridge Schedule (2026-27)",
+      description: "Every minute, only during the years 2026-2027.",
+      expression: "* * * * ? 2026-2027",
+      category: "devops"
+    },
+    {
+      name: "Full Quartz Scheduler Task",
+      description: "At second 0, every 15 minutes, Monday through Friday, in year 2026.",
+      expression: "0 */15 * * * ? 2026",
+      category: "devops"
+    },
+    {
+      name: "Mid-Month Sync System",
+      description: "Runs on the nearest weekday to the 15th of every month at midnight.",
+      expression: "0 0 15W * ?",
+      category: "devops"
+    },
+    {
+      name: "Bi-Weekly Payroll Report",
+      description: "Runs at 09:00 AM on the 1st and 15th of the month.",
+      expression: "0 9 1,15 * *",
+      category: "reports"
+    }
+  ];
+
+  let activeFilterState = 'all';
+
+  function renderTemplates() {
+    const grid = document.getElementById('templates-grid');
+    const searchEl = document.getElementById('template-search');
+    const searchVal = searchEl ? searchEl.value.toLowerCase() : '';
+    
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    
+    const filtered = templates.filter(t => {
+      const matchCategory = activeFilterState === 'all' || t.category === activeFilterState;
+      const matchSearch = t.name.toLowerCase().includes(searchVal) || 
+                          t.description.toLowerCase().includes(searchVal) || 
+                          t.expression.toLowerCase().includes(searchVal);
+      return matchCategory && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="col-span-1 sm:col-span-2 text-center text-mute py-8 text-xs font-mono">No templates found.</div>';
+      return;
+    }
+
+    filtered.forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-4 shadow flex flex-col justify-between transition duration-150 group';
+      card.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-white tracking-tight font-mono">${t.name}</span>
+            <span class="text-[9px] text-link bg-link/10 px-1.5 py-0.5 rounded border border-link/20 uppercase font-mono font-bold leading-none">${t.category}</span>
+          </div>
+          <div class="bg-canvas border border-hairline rounded-lg p-2 text-center font-mono text-[11px] font-bold text-white select-all">
+            ${t.expression}
+          </div>
+          <p class="text-[10px] text-body leading-relaxed">
+            ${t.description}
+          </p>
+        </div>
+        <button 
+          type="button" 
+          class="btn-load-template w-full mt-3 py-1.5 bg-white hover:bg-neutral-200 text-black text-[10px] font-bold rounded transition cursor-pointer text-center"
+          data-expr="${t.expression}"
+        >
+          Load Template
+        </button>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Add load button click listeners
+    grid.querySelectorAll('.btn-load-template').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expr = btn.getAttribute('data-expr');
+        if (expr && window['loadCronExpression']) {
+          window['loadCronExpression'](expr);
+          const generatorSec = document.getElementById('labels-grid');
+          if (generatorSec) {
+            generatorSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      });
+    });
+  }
+
   // Initialize
   function init() {
     setupInputListeners();
@@ -819,6 +1165,74 @@
     setupModeSwitcher();
     setupCopyButton();
     
+    // Setup target timezone change listener
+    const tzSelect = document.getElementById('tz-select');
+    if (tzSelect) {
+      tzSelect.addEventListener('change', () => {
+        updateGenerator();
+      });
+    }
+
+    // Setup snippet tabs click listeners
+    const tabs = document.querySelectorAll('#snippet-tabs button');
+    tabs.forEach(tabBtn => {
+      tabBtn.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('text-white', 'bg-hairline-strong');
+          t.classList.add('text-mute');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tabBtn.classList.remove('text-mute');
+        tabBtn.classList.add('text-white', 'bg-hairline-strong');
+        tabBtn.setAttribute('aria-selected', 'true');
+        
+        activeTabState.tab = tabBtn.getAttribute('data-tab') || 'spring';
+        updateSnippets(el.cronOutput.value);
+      });
+    });
+
+    // Setup snippet copy button
+    const copySnippetBtn = document.getElementById('btn-copy-snippet');
+    const copySnipIcon = document.getElementById('copy-snippet-icon');
+    const checkSnipIcon = document.getElementById('check-snippet-icon');
+    if (copySnippetBtn) {
+      copySnippetBtn.addEventListener('click', () => {
+        const codeText = document.getElementById('snippet-code-box')?.textContent;
+        if (!codeText) return;
+        navigator.clipboard.writeText(codeText).then(() => {
+          if (copySnipIcon && checkSnipIcon) {
+            copySnipIcon.classList.add('hidden');
+            checkSnipIcon.classList.remove('hidden');
+            setTimeout(() => {
+              copySnipIcon.classList.remove('hidden');
+              checkSnipIcon.classList.add('hidden');
+            }, 2000);
+          }
+        });
+      });
+    }
+
+    // Setup template search and filters
+    const tSearch = document.getElementById('template-search');
+    if (tSearch) {
+      tSearch.addEventListener('input', renderTemplates);
+    }
+    
+    const filterBtns = document.querySelectorAll('#template-filters button');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('text-white', 'bg-hairline-strong');
+          b.classList.add('text-mute', 'bg-canvas');
+        });
+        btn.classList.remove('text-mute', 'bg-canvas');
+        btn.classList.add('text-white', 'bg-hairline-strong');
+        
+        activeFilterState = btn.getAttribute('data-filter') || 'all';
+        renderTemplates();
+      });
+    });
+
     // Set initial values in state
     state.mode = '5';
     state.second.value = '*';
@@ -829,11 +1243,14 @@
     state.weekday.value = '*';
     state.year.value = '*';
     
-    window.loadCronExpression = loadCronExpression;
+    window['loadCronExpression'] = loadCronExpression;
     
     // Set initial active field representation (Minute)
     selectActiveField('minute');
     
+    // Initial templates render
+    renderTemplates();
+
     // Initial run
     updateGenerator();
   }
