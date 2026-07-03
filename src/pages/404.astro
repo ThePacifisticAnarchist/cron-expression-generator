@@ -1,0 +1,58 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout 
+  title="404 Page Not Found | CronGen" 
+  description="The page you are looking for does not exist. Return to CronGen to build, validate, and translate your cron schedules."
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header />
+
+  <!-- Main Content Layout -->
+  <main id="main-content" class="relative z-10 max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 flex flex-col items-center justify-center text-center space-y-8">
+    
+    <!-- 404 Visual Icon / Graphic -->
+    <div class="relative group">
+      <div class="absolute -inset-1 bg-gradient-to-r from-link via-violet-600 to-rose-500 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition duration-1000 animate-pulse"></div>
+      <div class="relative w-24 h-24 sm:w-32 sm:h-32 bg-canvas border border-hairline rounded-full flex items-center justify-center shadow-2xl">
+        <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tighter">404</span>
+      </div>
+    </div>
+
+    <!-- Error Text -->
+    <div class="space-y-3">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        Page Not Found
+      </h1>
+      <p class="text-sm text-body leading-relaxed max-w-sm mx-auto">
+        The scheduled path you requested does not exist, or has been moved to another execution interval.
+      </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="w-full max-w-xs pt-4 space-y-4">
+      <a 
+        href="/" 
+        class="block w-full bg-white hover:bg-neutral-200 text-black text-xs font-semibold py-3 px-4 rounded-lg transition duration-150 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
+      >
+        Back to Home
+      </a>
+      
+      <div class="text-[10px] text-mute uppercase tracking-widest font-bold pt-4 font-mono">
+        Popular Shortcuts
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+        <a href="/about" class="bg-canvas-soft border border-hairline hover:border-hairline-strong text-white py-2 px-3 rounded-lg transition">About Us</a>
+        <a href="/contact" class="bg-canvas-soft border border-hairline hover:border-hairline-strong text-white py-2 px-3 rounded-lg transition">Contact</a>
+      </div>
+    </div>
+
+  </main>
+
+  <Footer />
+</Layout>

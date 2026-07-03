@@ -1,0 +1,122 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout 
+  title="Contact Us | CronGen" 
+  description="Get in touch with the team behind CronGen. Send questions, feedback, or schedule parser improvements."
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header />
+
+  <!-- Main Content Layout -->
+  <main id="main-content" class="relative z-10 max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-10">
+    
+    <!-- Header -->
+    <section class="space-y-4 text-center sm:text-left">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-link/10 text-link border border-link/20">
+        Support & Feedback
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        Contact Us
+      </h1>
+      <p class="text-sm text-body leading-relaxed max-w-md">
+        Have questions, suggestions, or found a parser issue? Shoot us a message using the form below.
+      </p>
+    </section>
+
+    <!-- Contact Form Box -->
+    <section class="bg-canvas-soft border border-hairline rounded-xl p-6 sm:p-8 shadow-2xl relative">
+      <form id="contact-form" class="space-y-5">
+        <div>
+          <label for="name" class="block font-mono text-[10px] text-mute uppercase tracking-wider font-semibold mb-1.5">Full Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            required 
+            placeholder="John Doe"
+            class="w-full bg-canvas-soft-2 border border-hairline hover:border-hairline-strong focus:border-link text-white rounded-lg px-3.5 py-2 text-sm focus:outline-none transition duration-150 placeholder:text-mute/50"
+          />
+        </div>
+        <div>
+          <label for="email" class="block font-mono text-[10px] text-mute uppercase tracking-wider font-semibold mb-1.5">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required 
+            placeholder="john@example.com"
+            class="w-full bg-canvas-soft-2 border border-hairline hover:border-hairline-strong focus:border-link text-white rounded-lg px-3.5 py-2 text-sm focus:outline-none transition duration-150 placeholder:text-mute/50"
+          />
+        </div>
+        <div>
+          <label for="message" class="block font-mono text-[10px] text-mute uppercase tracking-wider font-semibold mb-1.5">Message</label>
+          <textarea 
+            id="message" 
+            name="message" 
+            rows="5" 
+            required 
+            placeholder="Hey team, I'd love to request support for..."
+            class="w-full bg-canvas-soft-2 border border-hairline hover:border-hairline-strong focus:border-link text-white rounded-lg px-3.5 py-2 text-sm focus:outline-none transition duration-150 resize-none placeholder:text-mute/50"
+          ></textarea>
+        </div>
+        <button 
+          type="submit"
+          class="w-full bg-white hover:bg-neutral-200 text-black text-xs font-semibold py-2.5 px-4 rounded-lg transition duration-150 cursor-pointer text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
+        >
+          Send Message
+        </button>
+      </form>
+
+      <!-- Submission Success Alert -->
+      <div id="contact-success" class="hidden absolute inset-0 bg-canvas-soft rounded-xl p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-4 animate-fade-in">
+        <div class="w-12 h-12 bg-emerald-950/40 border border-emerald-900/35 rounded-full flex items-center justify-center text-emerald-400">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 class="text-sm font-bold text-white">Message sent successfully!</h3>
+        <p class="text-xs text-body max-w-xs leading-relaxed">
+          Thanks for reaching out! We've received your feedback and will get back to you within 24-48 hours if necessary.
+        </p>
+        <button 
+          type="button"
+          id="btn-contact-reset"
+          class="text-xs font-mono text-link hover:underline pt-2 focus:outline-none"
+        >
+          Send another message
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      const successPanel = document.getElementById('contact-success');
+      const resetBtn = document.getElementById('btn-contact-reset');
+
+      if (form && successPanel) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          successPanel.classList.remove('hidden');
+        });
+      }
+
+      if (resetBtn && successPanel && form) {
+        resetBtn.addEventListener('click', () => {
+          form.reset();
+          successPanel.classList.add('hidden');
+        });
+      }
+    });
+  </script>
+
+  <Footer />
+</Layout>

@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { 
+	title = "Cron Expression Generator & Builder | CronGen",
+	description = "Free online cron expression generator. Build, validate, and understand crontab schedules in seconds. Learn how to write cron jobs with CronGen."
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+	<head>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-KMS8CZE763"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-KMS8CZE763');
+		</script>
+
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- Primary SEO Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://crongen.dev/" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="https://crongen.dev/og-image.png" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content="https://crongen.dev/" />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content="https://crongen.dev/og-image.png" />
+
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href="https://crongen.dev/" />
+	</head>
+	<body class="bg-canvas text-ink antialiased selection:bg-primary selection:text-on-primary">
+		<!-- Skip to content link for keyboard accessibility -->
+		<a 
+			href="#main-content" 
+			class="skip-link absolute top-0 left-4 -translate-y-full bg-link text-white px-4 py-2 rounded-b-md text-sm font-medium z-50 focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-link focus:ring-offset-2 focus:ring-offset-canvas"
+		>
+			Skip to content
+		</a>
+		
+		<slot />
+	</body>
+</html>

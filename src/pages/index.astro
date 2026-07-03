@@ -1,0 +1,831 @@
+---
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
+import CronGen from '../components/CronGen.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="Cron Expression Generator | Online Cron Job & Schedule Parser"
+  description="Free online cron expression generator, translator, and evaluator. Build, parse, and validate crontab schedule patterns for Quartz, Spring, AWS EventBridge, Hangfire, and node-cron."
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <main id="main-content" class="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <section class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-link/10 text-link border border-link/20">
+        v1.0.0 Stable
+      </span>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white text-balance">
+        Cron Expression Generator.
+      </h1>
+      <p class="text-base sm:text-lg text-body max-w-2xl mx-auto leading-relaxed text-balance">
+        An elegant, interactive crontab builder and parser for developers. Generate cron expressions, inspect execution schedules, and translate Unix scheduler codes in real time.
+      </p>
+    </section>
+
+    <!-- Generator Interface Section -->
+    <section id="generator-section" class="mb-24 scroll-mt-24" aria-label="Cron Expression Generator Tool">
+      <CronGen />
+    </section>
+
+    <!-- Content Layout: How to Use & What is Cron (Stacked & Redesigned) -->
+    <div class="flex flex-col gap-16 border-t border-hairline pt-16 mb-24">
+      
+      <!-- Section: How to Use -->
+      <section id="how-to-use" class="scroll-mt-24 space-y-6">
+        <div class="max-w-2xl">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span class="w-1.5 h-6 bg-link rounded-full"></span>
+            How to Use the Cron Generator
+          </h2>
+          <p class="text-sm text-body leading-relaxed mt-2">
+            Follow this quick guide to generate standard cron expressions in seconds.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Step 1 Card -->
+          <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg transition duration-200 group">
+            <div class="absolute -top-3 left-4 bg-link/10 text-link border border-link/20 text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded shadow">Step 01</div>
+            <h3 class="text-xs font-semibold text-white tracking-tight mt-2 mb-2 font-mono">1. Select a Field</h3>
+            <p class="text-xs text-body leading-relaxed">
+              Click on any of the five segments (minute, hour, day, month, weekday) in the expression box or the labels below to activate it. The active segment will highlight.
+            </p>
+          </div>
+
+          <!-- Step 2 Card -->
+          <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg transition duration-200 group">
+            <div class="absolute -top-3 left-4 bg-link/10 text-link border border-link/20 text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded shadow">Step 02</div>
+            <h3 class="text-xs font-semibold text-white tracking-tight mt-2 mb-2 font-mono">2. Input Values</h3>
+            <p class="text-xs text-body leading-relaxed">
+              Type your custom pattern in the text box (e.g. <code class="text-link font-mono">*/15</code>, <code class="text-link font-mono">0</code>, or <code class="text-link font-mono">1-5</code>). Or, click any of the pre-configured quick presets!
+            </p>
+          </div>
+
+          <!-- Step 3 Card -->
+          <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg transition duration-200 group">
+            <div class="absolute -top-3 left-4 bg-link/10 text-link border border-link/20 text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded shadow">Step 03</div>
+            <h3 class="text-xs font-semibold text-white tracking-tight mt-2 mb-2 font-mono">3. Copy & Use</h3>
+            <p class="text-xs text-body leading-relaxed">
+              Review the live natural-language translation and upcoming run schedules. Once satisfied, hit the copy icon to save the expression to your clipboard.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: What is a Cron Expression? -->
+      <article id="what-is-cron" class="scroll-mt-24 space-y-6">
+        <div class="max-w-2xl">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span class="w-1.5 h-6 bg-link rounded-full"></span>
+            What is a Cron Expression?
+          </h2>
+        </div>
+        
+        <div class="text-sm text-body leading-relaxed space-y-4">
+          <p>
+            A <strong class="text-white font-medium">cron job</strong> is a time-based job scheduler in Unix-like operating systems. System administrators and software engineers use it to run commands or scripts at fixed dates, times, or intervals. The term <em>cron</em> originates from the Greek word <em>chronos</em>, meaning time.
+          </p>
+          <p>
+            At the heart of this scheduler is the <strong class="text-white font-medium">crontab</strong> configuration file. Each line represents a unique task, defined by a syntax containing five fields followed by the path to the shell script.
+          </p>
+        </div>
+
+        <!-- Terminal Anatomy Widget -->
+        <div class="relative bg-canvas-soft-2 border border-hairline rounded-xl p-6 font-mono text-xs text-body overflow-x-auto shadow-inner group mt-4">
+          <div class="absolute top-0 left-0 w-1.5 h-full bg-link rounded-l-xl opacity-90"></div>
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500/90"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/90"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/90"></span>
+            <span class="text-[9px] text-mute uppercase tracking-widest font-bold ml-2">Crontab Visual Syntax Guide</span>
+          </div>
+          
+          <pre class="text-white font-mono leading-relaxed select-all">
+# ┌────────────── minute (0 - 59)
+# │ ┌──────────── hour (0 - 23)
+# │ │ ┌────────── day of month (1 - 31)
+# │ │ │ ┌──────── month (1 - 12)
+# │ │ │ │ ┌────── day of week (0 - 6) (Sunday=0 or 7)
+# │ │ │ │ │
+# * * * * *</pre>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <!-- Allowed values helper -->
+          <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-3">
+            <h3 class="text-xs font-semibold text-white tracking-tight font-mono border-b border-hairline pb-2 uppercase text-mute">Field Limits</h3>
+            <ul class="space-y-2 text-xs font-mono text-body tabular-nums">
+              <li class="flex justify-between border-b border-hairline/30 pb-1"><span>Minute</span><span class="text-white">0–59</span></li>
+              <li class="flex justify-between border-b border-hairline/30 pb-1"><span>Hour</span><span class="text-white">0–23</span></li>
+              <li class="flex justify-between border-b border-hairline/30 pb-1"><span>Day of Month</span><span class="text-white">1–31</span></li>
+              <li class="flex justify-between border-b border-hairline/30 pb-1"><span>Month</span><span class="text-white">1–12 or Jan-Dec</span></li>
+              <li class="flex justify-between pb-1"><span>Day of Week</span><span class="text-white">0–6 or Sun-Sat</span></li>
+            </ul>
+          </div>
+
+          <!-- Special characters helper -->
+          <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-3">
+            <h3 class="text-xs font-semibold text-white tracking-tight font-mono border-b border-hairline pb-2 uppercase text-mute">Special Syntax</h3>
+            <ul class="space-y-2 text-xs text-body font-mono">
+              <li class="flex gap-2">
+                <span class="text-link font-bold w-4 shrink-0">*</span>
+                <span>Wildcard meaning 'every' value.</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="text-link font-bold w-4 shrink-0">,</span>
+                <span>Separator for lists (e.g. <code class="text-white bg-canvas-soft-2 px-1 rounded">0,30</code>).</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="text-link font-bold w-4 shrink-0">-</span>
+                <span>Range specification (e.g. <code class="text-white bg-canvas-soft-2 px-1 rounded">1-5</code>).</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="text-link font-bold w-4 shrink-0">/</span>
+                <span>Interval step value (e.g. <code class="text-white bg-canvas-soft-2 px-1 rounded">*/15</code>).</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="text-sm text-body leading-relaxed mt-4">
+          Historically, the Unix cron scheduler has been a core component of server management since its introduction in early Version 7 Unix in the 1970s. Modern variants, like Vixie Cron, add further robustness. In contemporary cloud architectures, developers rely on cron logic to trigger serverless functions, orchestrate container schedules in Kubernetes, or queue worker processes in Node.js and Python frameworks.
+        </p>
+      </article>
+
+      <!-- Section: SEO Guide to Cron Expressions -->
+      <section id="cron-guide" class="scroll-mt-24 space-y-6">
+        <div class="max-w-2xl">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span class="w-1.5 h-6 bg-link rounded-full"></span>
+            Comprehensive Guide to Cron Schedules & Expression Generators
+          </h2>
+          <p class="text-sm text-body leading-relaxed mt-2">
+            A deep-dive reference for system administrators and developers on automating tasks using cron syntax.
+          </p>
+        </div>
+
+        <div class="text-sm text-body leading-relaxed space-y-4">
+          <p>
+            A <strong class="text-white font-medium">cron job</strong> is a time-based task scheduled to execute automatically at specified dates, times, or intervals. Under the hood, these tasks are driven by a <strong class="text-white font-medium">cron schedule</strong>, defined using a text string known as a <strong class="text-white font-medium">cron expression</strong>. While standard Unix environments use a five-field format, modern software platforms require advanced cron variants to support second-level precision, specific years, or special conflict prevention rules. Because manual editing of these schedules can easily lead to production syntax failures, utilizing a reliable <strong class="text-white font-medium">cron expression generator online</strong> is a developer best practice.
+          </p>
+          <p>
+            This <strong class="text-white font-medium">online cron expression generator</strong> acts as a comprehensive <strong class="text-white font-medium">cron expression translator</strong>. It instantly translates cryptic schedules like <code class="text-link font-mono">*/15 9-17 * * 1-5</code> into natural language (<em>"Every 15 minutes, between 09:00 AM and 05:59 PM, Monday through Friday"</em>). It also functions as a powerful <strong class="text-white font-medium">cron expression evaluator</strong> by listing upcoming execution dates, allowing developers to verify their automation runtime boundaries.
+          </p>
+
+          <h3 class="text-base font-semibold text-white tracking-tight mt-6">Common Schedulers & Syntaxes Supported</h3>
+          <p>
+            Automation tools, framework modules, and cloud services implement distinct variations of the cron syntax. Understanding these variants is essential when generating automation schedules:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div class="bg-canvas-soft-2 border border-hairline rounded-xl p-5 space-y-2">
+              <h4 class="text-xs font-semibold text-white tracking-tight font-mono uppercase text-link">JVM & .NET Ecosystems</h4>
+              <p class="text-xs leading-relaxed">
+                Java systems widely employ the <strong class="text-white font-medium">quartz cron expression generator</strong> format. The standard <strong class="text-white font-medium">java scheduler cron expression</strong> in Quartz uses six mandatory fields (Seconds, Minutes, Hours, Day of Month, Month, Day of Week) and an optional Year field. Similarly, the Spring Framework uses the six-field pattern matching Quartz within its `@Scheduled` annotation, functioning as a <strong class="text-white font-medium">spring cron expression generator</strong>. For .NET backends, developers using Quartz.NET or Hangfire utilize similar configurations. Applying a <strong class="text-white font-medium">dotnet cron expression generator</strong> or <strong class="text-white font-medium">hangfire cron expression generator online</strong> ensures these systems execute background tasks reliably.
+              </p>
+            </div>
+
+            <div class="bg-canvas-soft-2 border border-hairline rounded-xl p-5 space-y-2">
+              <h4 class="text-xs font-semibold text-white tracking-tight font-mono uppercase text-link">Cloud & Infrastructure Schedulers</h4>
+              <p class="text-xs leading-relaxed">
+                Cloud native systems rely heavily on cron rules. The <strong class="text-white font-medium">aws cron expression generator</strong> configures rules for Amazon EventBridge (CloudWatch Events) using six mandatory fields (Minutes, Hours, Day of Month, Month, Day of Week, Year). AWS requires using a question mark (<code class="text-link font-mono">?</code>) in either the Day of Month or Day of Week field. For Microsoft Azure, the <strong class="text-white font-medium">azure function cron expression generator</strong> validates NCRONTAB configurations (six fields including seconds). For CRM integrations, the Salesforce Apex scheduler operates on a Quartz-compatible system, making a <strong class="text-white font-medium">salesforce cron expression generator</strong> critical for successful deployment.
+              </p>
+            </div>
+
+            <div class="bg-canvas-soft-2 border border-hairline rounded-xl p-5 space-y-2">
+              <h4 class="text-xs font-semibold text-white tracking-tight font-mono uppercase text-link">Node.js & Python Automation</h4>
+              <p class="text-xs leading-relaxed">
+                In backend JavaScript scripts, the popular npm package <strong class="text-white font-medium">node-cron</strong> extends standard cron to 6 fields to support seconds-level resolution. Python scripts typically run on traditional Unix schedulers, where developers configure standard schedules or edit a <strong class="text-white font-medium">python cron tab</strong> manually. For serverless script coordination, a dedicated scheduler like Apache Airflow is used, where an <strong class="text-white font-medium">airflow cron expression generator</strong> helps avoid validation mistakes during pipeline configuration.
+              </p>
+            </div>
+
+            <div class="bg-canvas-soft-2 border border-hairline rounded-xl p-5 space-y-2">
+              <h4 class="text-xs font-semibold text-white tracking-tight font-mono uppercase text-link">Java & JVM Core Schedulers</h4>
+              <p class="text-xs leading-relaxed">
+                Enterprise systems rely on database-backed and distributed executors like db-scheduler or JobRunr. Generating a valid <strong class="text-white font-medium">java cron expression generator</strong> string ensures that cluster tasks do not run concurrently or trigger multiple times across server nodes. By utilizing our interactive switcher, developers can toggle modes to create strings optimized for Quartz, standard crontab, or cloud infrastructure constraints.
+              </p>
+            </div>
+          </div>
+
+          <h3 class="text-base font-semibold text-white tracking-tight mt-6">Cron Fields Breakdown</h3>
+          <p>
+            Cron syntax fields represent temporal divisions evaluated from left to right. Depending on your target system (standard UNIX vs Quartz/AWS/Spring), the string contains:
+          </p>
+          <ul class="list-disc list-inside pl-2 space-y-2 text-xs font-mono">
+            <li><strong class="text-white font-semibold">Seconds</strong> (0-59, Quartz/Spring/Node-cron only)</li>
+            <li><strong class="text-white font-semibold">Minutes</strong> (0-59, Standard UNIX first field)</li>
+            <li><strong class="text-white font-semibold">Hours</strong> (0-23, 24-hour format)</li>
+            <li><strong class="text-white font-semibold">Day of Month</strong> (1-31, Calendar days)</li>
+            <li><strong class="text-white font-semibold">Month</strong> (1-12 or JAN-DEC)</li>
+            <li><strong class="text-white font-semibold">Day of Week</strong> (0-6 or SUN-SAT, Quartz uses 1-7)</li>
+            <li><strong class="text-white font-semibold">Year</strong> (Optional/Mandatory in Quartz and AWS)</li>
+          </ul>
+
+          <p class="pt-4 text-xs text-mute leading-relaxed border-t border-hairline">
+            Our tool helps you generate configurations across all these platforms. Easily toggle between 5-field standard and 6-field seconds-based or AWS year-based formats, load presets, and copy ready-to-use cron lines to your clipboard instantly.
+          </p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Common Examples Section -->
+    <section id="common-examples" class="border-t border-hairline pt-16 mb-16 scroll-mt-24 space-y-6">
+      <div class="max-w-2xl">
+        <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <span class="w-1.5 h-6 bg-link rounded-full"></span>
+          Common Cron Examples
+        </h2>
+        <p class="text-sm text-body leading-relaxed mt-2">
+          Review these common crontab schedules. Click the load button to instantly load any pattern into the generator to view its details or customize it.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Example 1 -->
+        <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg flex flex-col justify-between transition duration-200 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-white tracking-tight font-mono">Every 5 Minutes</span>
+              <span class="text-[10px] text-link bg-link/10 px-2 py-0.5 rounded border border-link/20 uppercase font-mono font-bold">Step</span>
+            </div>
+            <div class="bg-canvas border border-hairline rounded-lg p-2.5 text-center font-mono text-sm font-bold text-white select-all">
+              */5 * * * *
+            </div>
+            <p class="text-xs text-body leading-relaxed">
+              Runs every 5th minute past every hour. Good for heartbeat logs or queue worker checks.
+            </p>
+          </div>
+          <button 
+            type="button" 
+            onclick="if(window.loadCronExpression) window.loadCronExpression('*/5 * * * *'); document.getElementById('generator-section').scrollIntoView({behavior: 'smooth'});"
+            class="w-full mt-4 py-2 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded-lg transition duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link cursor-pointer text-center"
+            aria-label="Load */5 * * * * into generator"
+          >
+            Load into Builder
+          </button>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg flex flex-col justify-between transition duration-200 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-white tracking-tight font-mono">Every Hour</span>
+              <span class="text-[10px] text-link bg-link/10 px-2 py-0.5 rounded border border-link/20 uppercase font-mono font-bold">Hourly</span>
+            </div>
+            <div class="bg-canvas border border-hairline rounded-lg p-2.5 text-center font-mono text-sm font-bold text-white select-all">
+              0 * * * *
+            </div>
+            <p class="text-xs text-body leading-relaxed">
+              Runs at minute 0 of every hour. Often used for hourly reports and stats.
+            </p>
+          </div>
+          <button 
+            type="button" 
+            onclick="if(window.loadCronExpression) window.loadCronExpression('0 * * * *'); document.getElementById('generator-section').scrollIntoView({behavior: 'smooth'});"
+            class="w-full mt-4 py-2 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded-lg transition duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link cursor-pointer text-center"
+            aria-label="Load 0 * * * * into generator"
+          >
+            Load into Builder
+          </button>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg flex flex-col justify-between transition duration-200 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-white tracking-tight font-mono">Daily at Midnight</span>
+              <span class="text-[10px] text-link bg-link/10 px-2 py-0.5 rounded border border-link/20 uppercase font-mono font-bold">Daily</span>
+            </div>
+            <div class="bg-canvas border border-hairline rounded-lg p-2.5 text-center font-mono text-sm font-bold text-white select-all">
+              0 0 * * *
+            </div>
+            <p class="text-xs text-body leading-relaxed">
+              Runs at 00:00 every single day. Ideal for daily backups, resets, and cleanup tasks.
+            </p>
+          </div>
+          <button 
+            type="button" 
+            onclick="if(window.loadCronExpression) window.loadCronExpression('0 0 * * *'); document.getElementById('generator-section').scrollIntoView({behavior: 'smooth'});"
+            class="w-full mt-4 py-2 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded-lg transition duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link cursor-pointer text-center"
+            aria-label="Load 0 0 * * * into generator"
+          >
+            Load into Builder
+          </button>
+        </div>
+
+        <!-- Example 4 -->
+        <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg flex flex-col justify-between transition duration-200 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-white tracking-tight font-mono">Weekly on Sunday</span>
+              <span class="text-[10px] text-link bg-link/10 px-2 py-0.5 rounded border border-link/20 uppercase font-mono font-bold">Weekly</span>
+            </div>
+            <div class="bg-canvas border border-hairline rounded-lg p-2.5 text-center font-mono text-sm font-bold text-white select-all">
+              0 0 * * 0
+            </div>
+            <p class="text-xs text-body leading-relaxed">
+              Runs at 00:00 every Sunday. Perfect for weekly mail digests and server reboots.
+            </p>
+          </div>
+          <button 
+            type="button" 
+            onclick="if(window.loadCronExpression) window.loadCronExpression('0 0 * * 0'); document.getElementById('generator-section').scrollIntoView({behavior: 'smooth'});"
+            class="w-full mt-4 py-2 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded-lg transition duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link cursor-pointer text-center"
+            aria-label="Load 0 0 * * 0 into generator"
+          >
+            Load into Builder
+          </button>
+        </div>
+
+        <!-- Example 5 -->
+        <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg flex flex-col justify-between transition duration-200 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-white tracking-tight font-mono">Monthly on the 1st</span>
+              <span class="text-[10px] text-link bg-link/10 px-2 py-0.5 rounded border border-link/20 uppercase font-mono font-bold">Monthly</span>
+            </div>
+            <div class="bg-canvas border border-hairline rounded-lg p-2.5 text-center font-mono text-sm font-bold text-white select-all">
+              0 0 1 * *
+            </div>
+            <p class="text-xs text-body leading-relaxed">
+              Runs at 00:00 on the 1st of every month. Standard for monthly accounting and invoicing.
+            </p>
+          </div>
+          <button 
+            type="button" 
+            onclick="if(window.loadCronExpression) window.loadCronExpression('0 0 1 * *'); document.getElementById('generator-section').scrollIntoView({behavior: 'smooth'});"
+            class="w-full mt-4 py-2 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded-lg transition duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link cursor-pointer text-center"
+            aria-label="Load 0 0 1 * * into generator"
+          >
+            Load into Builder
+          </button>
+        </div>
+
+        <!-- Example 6 -->
+        <div class="relative bg-canvas-soft-2 border border-hairline hover:border-link/30 rounded-xl p-5 shadow-lg flex flex-col justify-between transition duration-200 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-white tracking-tight font-mono">Yearly on Jan 1st</span>
+              <span class="text-[10px] text-link bg-link/10 px-2 py-0.5 rounded border border-link/20 uppercase font-mono font-bold">Yearly</span>
+            </div>
+            <div class="bg-canvas border border-hairline rounded-lg p-2.5 text-center font-mono text-sm font-bold text-white select-all">
+              0 0 1 1 *
+            </div>
+            <p class="text-xs text-body leading-relaxed">
+              Runs at 00:00 on January 1st every year. Used for annual maintenance and audits.
+            </p>
+          </div>
+          <button 
+            type="button" 
+            onclick="if(window.loadCronExpression) window.loadCronExpression('0 0 1 1 *'); document.getElementById('generator-section').scrollIntoView({behavior: 'smooth'});"
+            class="w-full mt-4 py-2 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded-lg transition duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link cursor-pointer text-center"
+            aria-label="Load 0 0 1 1 * into generator"
+          >
+            Load into Builder
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Frequently Asked Questions Section (SEO FAQ Schema Integrated) -->
+    <section id="faq-section" class="border-t border-hairline pt-16 mb-16 scroll-mt-24 space-y-6">
+      <div class="max-w-2xl">
+        <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <span class="w-1.5 h-6 bg-link rounded-full"></span>
+          Frequently Asked Questions
+        </h2>
+        <p class="text-sm text-body leading-relaxed mt-2">
+          Find answers to common questions about cron scheduler formats, syntax rules, and configuration patterns.
+        </p>
+      </div>
+
+      <div class="max-w-3xl space-y-4">
+        <!-- FAQ 1 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>What is a cron expression?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            A cron expression is a string of 5 fields (minute, hour, day-of-month, month, day-of-week) that defines a recurring schedule. Originally from Unix's cron daemon, it's now used in Kubernetes, AWS EventBridge, Spring, and Quartz.
+          </div>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>How do I write a cron expression for every 5 minutes?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            Use <code class="text-link font-mono">*/5 * * * *</code>. The <code class="text-link font-mono">*/5</code> in the minute field means every 5th minute starting at 0, so it runs at 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, and 55 minutes past every hour.
+          </div>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>How do I run a cron job every 10, 15, or 30 minutes?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            Every 10 minutes: <code class="text-link font-mono">*/10 * * * *</code>. Every 15 minutes: <code class="text-link font-mono">*/15 * * * *</code>. Every 30 minutes: <code class="text-link font-mono">*/30 * * * *</code> or <code class="text-link font-mono">0,30 * * * *</code>. The <code class="text-link font-mono">*/N</code> syntax means every Nth interval.
+          </div>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>How do I schedule a cron job for the last day of the month?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            Standard Unix cron can't directly express the last day of the month. Use <code class="text-link font-mono">28-31 * * *</code> with a date check inside your execution script, or use Quartz syntax with L: <code class="text-link font-mono">0 0 0 L * ?</code> which runs at midnight on the last day of every month.
+          </div>
+        </details>
+
+        <!-- FAQ 5 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>What's the cron expression for every weekday (Monday to Friday)?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            Use <code class="text-link font-mono">0 9 * * 1-5</code> to run at 9 AM, Monday through Friday. The <code class="text-link font-mono">1-5</code> in the day-of-week field means days 1 (Monday) to 5 (Friday). In standard Unix cron, Sunday is 0.
+          </div>
+        </details>
+
+        <!-- FAQ 6 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>Why is my cron job running on the wrong days?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            In Unix cron, if you specify both day-of-month and day-of-week, cron runs when either field matches (OR logic), not both (AND). So <code class="text-link font-mono">0 0 1 * 1</code> runs on the 1st of the month and every Monday, not Monday the 1st. This is the most common cron gotcha.
+          </div>
+        </details>
+
+        <!-- FAQ 7 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>Can I run a cron job every 30 seconds?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            No, the minimum cron resolution is 1 minute. To approximate every 30 seconds, run two separate jobs: one at <code class="text-link font-mono">* * * * *</code> and another at <code class="text-link font-mono">* * * * * sleep 30 && /your/command</code>.
+          </div>
+        </details>
+
+        <!-- FAQ 8 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>What's the difference between * and ? in cron expressions?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            In Quartz and AWS EventBridge (6-field cron), <code class="text-link font-mono">?</code> means no specific value and is used to ignore one day field while specifying the other. In standard Unix cron (5-field), <code class="text-link font-mono">?</code> is not supported, and only <code class="text-link font-mono">*</code> is used.
+          </div>
+        </details>
+
+        <!-- FAQ 9 -->
+        <details class="group bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 transition-all duration-200">
+          <summary class="flex justify-between items-center font-semibold text-white text-sm cursor-pointer list-none select-none focus:outline-none">
+            <span>What is the difference between 5-field and 6-field cron expressions?</span>
+            <svg class="w-4 h-4 text-mute group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-body leading-relaxed border-t border-hairline/50 pt-3">
+            Unix/Linux cron uses 5 fields: minute, hour, day-of-month, month, day-of-week. Quartz, AWS EventBridge, and Spring use 6 or 7 fields, adding seconds and optionally year. The <code class="text-link font-mono">?</code> character and L (last) modifier only work in 6-field Quartz syntax.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Schema.org JSON-LD FAQ Page Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a cron expression?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A cron expression is a string of 5 fields (minute, hour, day-of-month, month, day-of-week) that defines a recurring schedule. Originally from Unix's cron daemon, it's now used in Kubernetes, AWS EventBridge, Spring, and Quartz."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I write a cron expression for every 5 minutes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use */5 * * * *. The */5 in the minute field means every 5th minute starting at 0, so it runs at 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, and 55 minutes past every hour."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I run a cron job every 10, 15, or 30 minutes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every 10 minutes: */10 * * * *. Every 15 minutes: */15 * * * *. Every 30 minutes: */30 * * * * or 0,30 * * * *. The */N syntax means every Nth interval."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I schedule a cron job for the last day of the month?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard Unix cron can't directly express last day of month. Use 28-31 * * * with a date check inside your script, or use Quartz syntax with L: 0 0 0 L * ? runs at midnight on the last day of every month."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the cron expression for every weekday (Monday to Friday)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use 0 9 * * 1-5 to run at 9 AM, Monday through Friday. The 1-5 in the day-of-week field means days 1 (Monday) to 5 (Friday). In Unix cron, Sunday is 0."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my cron job running on the wrong days?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Unix cron, if you specify both day-of-month and day-of-week, cron runs when either field matches (OR logic), not both (AND). So 0 0 1 * 1 runs on the 1st of the month and every Monday, not Monday the 1st. This is the most common cron gotcha."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I run a cron job every 30 seconds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, the minimum cron resolution is 1 minute. To approximate every 30 seconds, run two jobs: one at * * * * * and another at * * * * * sleep 30 && /your/command."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between * and ? in cron expressions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Quartz and AWS EventBridge (6-field cron), ? means no specific value and is used to ignore one day field while specifying the other. In standard Unix cron (5-field), ? is not supported, only * is used."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between 5-field and 6-field cron expressions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Unix/Linux cron uses 5 fields: minute, hour, day-of-month, month, day-of-week. Quartz, AWS EventBridge, and Spring use 6 or 7 fields, adding seconds and optionally year. The ? character and L (last) modifier only work in 6-field Quartz syntax."
+          }
+        }
+      ]
+    }
+    </script>
+  </main>
+
+  <Footer />
+
+  <!-- Floating Translucent Side Navigation -->
+  <nav 
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:right-6 lg:left-auto lg:translate-x-0 z-50 flex flex-row lg:flex-col items-center gap-2 p-2 bg-canvas-soft-2/65 backdrop-blur-lg border border-hairline/80 rounded-full lg:rounded-2xl shadow-2xl transition-all duration-300" 
+    aria-label="Floating side menu"
+  >
+    <!-- Interactive Tool Link -->
+    <a 
+      href="#generator-section" 
+      class="floating-nav-link flex items-center justify-center w-11 h-11 rounded-full text-mute hover:text-white hover:bg-hairline-strong/60 transition-all duration-200 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link"
+      aria-label="Navigate to Interactive Tool"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+      </svg>
+      <span class="nav-tooltip px-2.5 py-1 text-[11px] font-medium text-white bg-canvas border border-hairline rounded-md shadow-lg">
+        Interactive Tool
+      </span>
+    </a>
+
+    <!-- How to Use Link -->
+    <a 
+      href="#how-to-use" 
+      class="floating-nav-link flex items-center justify-center w-11 h-11 rounded-full text-mute hover:text-white hover:bg-hairline-strong/60 transition-all duration-200 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link"
+      aria-label="Navigate to Instructional Guide"
+    >
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+        <path d="M6 6h10"></path>
+        <path d="M6 10h10"></path>
+      </svg>
+      <span class="nav-tooltip px-2.5 py-1 text-[11px] font-medium text-white bg-canvas border border-hairline rounded-md shadow-lg">
+        How to Use
+      </span>
+    </a>
+
+    <!-- What is Cron Link -->
+    <a 
+      href="#what-is-cron" 
+      class="floating-nav-link flex items-center justify-center w-11 h-11 rounded-full text-mute hover:text-white hover:bg-hairline-strong/60 transition-all duration-200 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link"
+      aria-label="Navigate to What is Cron Explanation"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      <span class="nav-tooltip px-2.5 py-1 text-[11px] font-medium text-white bg-canvas border border-hairline rounded-md shadow-lg">
+        What is Cron?
+      </span>
+    </a>
+
+    <!-- Common Examples Link -->
+    <a 
+      href="#common-examples" 
+      class="floating-nav-link flex items-center justify-center w-11 h-11 rounded-full text-mute hover:text-white hover:bg-hairline-strong/60 transition-all duration-200 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link"
+      aria-label="Navigate to Common Examples Table"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+      </svg>
+      <span class="nav-tooltip px-2.5 py-1 text-[11px] font-medium text-white bg-canvas border border-hairline rounded-md shadow-lg">
+        Common Examples
+      </span>
+    </a>
+
+    <!-- FAQ Link -->
+    <a 
+      href="#faq-section" 
+      class="floating-nav-link flex items-center justify-center w-11 h-11 rounded-full text-mute hover:text-white hover:bg-hairline-strong/60 transition-all duration-200 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link"
+      aria-label="Navigate to Frequently Asked Questions"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span class="nav-tooltip px-2.5 py-1 text-[11px] font-medium text-white bg-canvas border border-hairline rounded-md shadow-lg">
+        FAQs
+      </span>
+    </a>
+  </nav>
+
+  <!-- Scrollspy Script for Floating Navigation Scroll Sync -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = [
+        document.getElementById('generator-section'),
+        document.getElementById('how-to-use'),
+        document.getElementById('what-is-cron'),
+        document.getElementById('common-examples'),
+        document.getElementById('faq-section')
+      ].filter(Boolean);
+      
+      const navLinks = document.querySelectorAll('.floating-nav-link');
+
+      let isScrollingFromClick = false;
+      let clickTimeout = null;
+
+      // Handle clicking nav links (set active class instantly, disable scroll listener momentarily)
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          isScrollingFromClick = true;
+          if (clickTimeout) clearTimeout(clickTimeout);
+          
+          navLinks.forEach(l => {
+            if (l === link) {
+              l.classList.remove('text-mute');
+              l.classList.add('text-white', 'bg-hairline-strong/75', 'border', 'border-hairline-strong');
+            } else {
+              l.classList.remove('text-white', 'bg-hairline-strong/75', 'border', 'border-hairline-strong');
+              l.classList.add('text-mute');
+            }
+          });
+
+          clickTimeout = setTimeout(() => {
+            isScrollingFromClick = false;
+          }, 800); // Wait for smooth scroll animation to finish
+        });
+      });
+
+      // Unified scroll spy calculation
+      function updateActiveSectionOnScroll() {
+        if (isScrollingFromClick) return;
+
+        let activeSection = null;
+        let minDistance = Infinity;
+
+        sections.forEach(sec => {
+          const rect = sec.getBoundingClientRect();
+          // Offset distance of 150px representing the scroll-mt anchor line
+          const distance = Math.abs(rect.top - 150);
+          
+          // Section must have entered the top half of the screen and not scrolled out completely
+          if (rect.top < window.innerHeight * 0.45 && rect.bottom > 150) {
+            if (distance < minDistance) {
+              minDistance = distance;
+              activeSection = sec;
+            }
+          }
+        });
+
+        if (activeSection) {
+          const id = activeSection.getAttribute('id');
+          navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${id}`) {
+              link.classList.remove('text-mute');
+              link.classList.add('text-white', 'bg-hairline-strong/75', 'border', 'border-hairline-strong');
+            } else {
+              link.classList.remove('text-white', 'bg-hairline-strong/75', 'border', 'border-hairline-strong');
+              link.classList.add('text-mute');
+            }
+          });
+        }
+      }
+
+      // Add optimized scroll listener
+      let scrollTicking = false;
+      window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+          window.requestAnimationFrame(() => {
+            updateActiveSectionOnScroll();
+            scrollTicking = false;
+          });
+          scrollTicking = true;
+        }
+      }, { passive: true });
+
+      // Run initial check
+      updateActiveSectionOnScroll();
+    });
+  </script>
+
+  <style>
+    /* Scoped styles for the floating navigation tooltips */
+    .nav-tooltip {
+      position: absolute;
+      z-index: 50;
+      pointer-events: none;
+      opacity: 0;
+      display: none;
+      white-space: nowrap;
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
+    }
+
+    /* Show tooltip on md screens and up (tablets/desktops) when hovering/focusing */
+    @media (min-width: 768px) {
+      .nav-tooltip {
+        display: block;
+        /* Position above the icon (mobile/tablet horizontal bar) */
+        bottom: 100%;
+        left: 50%;
+        transform: translate(-50%, 6px) scale(0.95);
+        transform-origin: bottom center;
+      }
+      .floating-nav-link:hover .nav-tooltip,
+      .floating-nav-link:focus-within .nav-tooltip {
+        opacity: 1;
+        transform: translate(-50%, -2px) scale(1);
+      }
+    }
+
+    /* Custom offset position and shift transform on large screens (desktops) */
+    @media (min-width: 1024px) {
+      .nav-tooltip {
+        /* Position to the left of the icon (desktop vertical bar) */
+        bottom: auto;
+        left: auto;
+        top: 50%;
+        right: 100%;
+        transform: translate(6px, -50%) scale(0.95);
+        transform-origin: right center;
+      }
+      .floating-nav-link:hover .nav-tooltip,
+      .floating-nav-link:focus-within .nav-tooltip {
+        opacity: 1;
+        transform: translate(-2px, -50%) scale(1);
+      }
+    }
+  </style>
+</Layout>

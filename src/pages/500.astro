@@ -1,0 +1,57 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout 
+  title="500 Internal Server Error | CronGen" 
+  description="Something went wrong on our end. Please reload the page or return to the home builder dashboard."
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header />
+
+  <!-- Main Content Layout -->
+  <main id="main-content" class="relative z-10 max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 flex flex-col items-center justify-center text-center space-y-8">
+    
+    <!-- 500 Visual Icon / Graphic -->
+    <div class="relative group">
+      <div class="absolute -inset-1 bg-gradient-to-r from-rose-500 via-red-600 to-amber-500 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition duration-1000 animate-pulse"></div>
+      <div class="relative w-24 h-24 sm:w-32 sm:h-32 bg-canvas border border-hairline rounded-full flex items-center justify-center shadow-2xl">
+        <span class="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tighter">500</span>
+      </div>
+    </div>
+
+    <!-- Error Text -->
+    <div class="space-y-3">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        Internal Server Error
+      </h1>
+      <p class="text-sm text-body leading-relaxed max-w-sm mx-auto">
+        Something misfired in our schedule execution pipeline. We're looking into why this sequence crashed.
+      </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="w-full max-w-xs pt-4 flex flex-col gap-3">
+      <button 
+        type="button"
+        onclick="window.location.reload();"
+        class="w-full bg-white hover:bg-neutral-200 text-black text-xs font-semibold py-3 px-4 rounded-lg transition duration-150 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-canvas cursor-pointer"
+      >
+        Reload Page
+      </button>
+      <a 
+        href="/" 
+        class="block w-full bg-canvas-soft hover:bg-hairline-strong/60 border border-hairline hover:border-hairline-strong text-white text-xs font-semibold py-3 px-4 rounded-lg transition duration-150 text-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link"
+      >
+        Back to Home
+      </a>
+    </div>
+
+  </main>
+
+  <Footer />
+</Layout>

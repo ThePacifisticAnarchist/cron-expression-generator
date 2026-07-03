@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout 
+  title="Privacy Policy | CronGen" 
+  description="Learn about our privacy policy. CronGen does not collect, store, or log any personal information or cron schedule expressions. All computations happen client-side."
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header />
+
+  <!-- Main Content Layout -->
+  <main id="main-content" class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-12">
+    
+    <!-- Header -->
+    <section class="space-y-4">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-link/10 text-link border border-link/20">
+        Legal & Safety
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        Privacy Policy
+      </h1>
+      <p class="text-xs font-mono text-mute">Last updated: July 2, 2026</p>
+    </section>
+
+    <!-- Privacy Statements -->
+    <section class="space-y-6 text-xs sm:text-sm text-body leading-relaxed">
+      <div class="space-y-2">
+        <h2 class="text-base font-bold text-white tracking-tight">1. Data Privacy & Processing</h2>
+        <p>
+          At CronGen, we hold your data privacy in the highest regard. **We do not collect, transmit, store, or log any parameters, inputs, or schedules that you write in the generator.** All expressions, presets, and text evaluations are compiled and calculated entirely inside your client web browser. Because no backend server requests are generated during computation, your cron task details remain completely private and secure on your local machine.
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <h2 class="text-base font-bold text-white tracking-tight">2. Information Collection</h2>
+        <p>
+          We do not require user accounts, email registration, or sign-ins. We do not place tracking pixels or marketing cookies on this website. Standard web server logs may record basic metadata (such as your IP address, browser type, and referrer link) purely for hosting administration, bandwidth monitoring, and site security purposes.
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <h2 class="text-base font-bold text-white tracking-tight">3. Third Party Links</h2>
+        <p>
+          This website may contain links to external developer documentation or packages (such as npm, GitHub, or Astro guides). We are not responsible for the privacy practices or contents of those external resources.
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <h2 class="text-base font-bold text-white tracking-tight">4. Policy Consent</h2>
+        <p>
+          By using our website, you consent to this local-only, server-free privacy policy. Any future revisions or adjustments to our policy terms will be published directly on this page.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Layout>

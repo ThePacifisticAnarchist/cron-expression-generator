@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #050505;
+  --color-canvas-soft: #0a0a0a;
+  --color-canvas-soft-2: #121212;
+  --color-primary: #ffffff;
+  --color-on-primary: #000000;
+  --color-ink: #ffffff;
+  --color-body: #a1a1a1;
+  --color-mute: #525252;
+  --color-hairline: #1f1f1f;
+  --color-hairline-strong: #333333;
+  --color-link: #0070f3;
+  
+  --font-sans: "Inter", Geist, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", Geist Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+}
+
+/* Custom styles for developer-focused dark mode UI */
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "ss02";
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll margin for anchor links */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-hairline-strong);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Tabular nums for values */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mesh gradient backdrop effect */
+.mesh-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 600px;
+  background-image: 
+    radial-gradient(circle at 15% 0%, rgba(0, 124, 240, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 50% 0%, rgba(121, 40, 202, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 85% 0%, rgba(255, 77, 77, 0.12) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Custom range input / slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: var(--color-hairline-strong);
+  height: 4px;
+  border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px; /* center thumb on track */
+  background-color: var(--color-ink);
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  transition: transform 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(0.9);
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+/* Stacked subtle card shadows */
+.card-elevation-1 {
+  box-shadow: 0 0 0 1px var(--color-hairline);
+}
+
+.card-elevation-2 {
+  box-shadow: 0 0 0 1px var(--color-hairline), 0px 2px 4px rgba(0,0,0,0.4);
+}
+
+.card-elevation-3 {
+  box-shadow: 0 0 0 1px var(--color-hairline), 0px 4px 12px -2px rgba(0,0,0,0.5);
+}
+
+/* Text Balance on Headings */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Skip link focus styles */
+.skip-link {
+  transition: transform 0.2s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}

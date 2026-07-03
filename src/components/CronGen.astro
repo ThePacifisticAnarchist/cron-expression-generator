@@ -1,0 +1,857 @@
+---
+// src/components/CronGen.astro
+---
+
+<div class="space-y-8 max-w-3xl mx-auto">
+  
+  <!-- 1. Centered Live Results Header -->
+  <div class="text-center space-y-3">
+    <!-- Human-Readable Translation -->
+    <div 
+      id="cron-description" 
+      class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white min-h-[48px] flex items-center justify-center px-4 transition-colors duration-200"
+    >
+      “Every minute.”
+    </div>
+    
+    <!-- Next Execution Timestamp -->
+    <div id="next-run-header" class="font-mono text-xs sm:text-sm text-mute flex items-center justify-center gap-1.5 tabular-nums">
+      next at <span id="next-run-time" class="text-link font-medium">Calculating…</span>
+    </div>
+  </div>
+
+  <!-- 1.5 Segmented Mode Switcher Toggle -->
+  <div class="flex items-center justify-center">
+    <div class="inline-flex p-0.5 bg-canvas-soft-2 border border-hairline rounded-lg" role="tablist" aria-label="Cron Mode">
+      <button 
+        type="button" 
+        id="btn-mode-5" 
+        class="px-3 py-1.5 text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-white bg-hairline-strong/60"
+        role="tab"
+        aria-selected="true"
+      >
+        <span class="hidden sm:inline">5-Field (Unix)</span>
+        <span class="inline sm:hidden">5-Field</span>
+      </button>
+      <button 
+        type="button" 
+        id="btn-mode-6-seconds" 
+        class="px-3 py-1.5 text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-mute hover:text-white"
+        role="tab"
+        aria-selected="false"
+      >
+        <span class="hidden sm:inline">6-Field (Seconds)</span>
+        <span class="inline sm:hidden">6-Sec</span>
+      </button>
+      <button 
+        type="button" 
+        id="btn-mode-6-year" 
+        class="px-3 py-1.5 text-[11px] font-mono font-medium rounded-md cursor-pointer transition-all duration-150 text-mute hover:text-white"
+        role="tab"
+        aria-selected="false"
+      >
+        <span class="hidden sm:inline">6-Field (AWS/Year)</span>
+        <span class="inline sm:hidden">6-Year</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. Large Interactive Expression Box -->
+  <div class="relative max-w-2xl mx-auto bg-canvas border-2 border-hairline hover:border-hairline-strong rounded-xl p-4 sm:p-5 shadow-[0_0_20px_rgba(0,0,0,0.6)] flex items-center focus-within:border-link/80 focus-within:shadow-[0_0_25px_rgba(0,112,243,0.15)] transition duration-200">
+    <!-- Glow effect top strip -->
+    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-link via-violet-600 to-rose-500 animate-pulse rounded-t-xl"></div>
+    
+    <!-- Grid of Editable Fields -->
+    <div id="expression-grid" class="grid grid-cols-5 flex-1 pr-12 sm:pr-14 text-center font-mono text-base sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-wider">
+      <input 
+        type="text" 
+        id="expr-second" 
+        value="*" 
+        class="expr-segment w-full min-w-0 text-center bg-transparent border-b-2 border-transparent hover:border-hairline-strong/30 text-white font-mono font-bold focus:outline-none select-all transition duration-150 py-1 cursor-text hidden"
+        aria-label="Edit second segment"
+        spellcheck="false"
+      />
+      <input 
+        type="text" 
+        id="expr-minute" 
+        value="*" 
+        class="expr-segment w-full min-w-0 text-center bg-transparent border-b-2 border-transparent hover:border-hairline-strong/30 text-white font-mono font-bold focus:outline-none select-all transition duration-150 py-1 cursor-text"
+        aria-label="Edit minute segment"
+        spellcheck="false"
+      />
+      <input 
+        type="text" 
+        id="expr-hour" 
+        value="*" 
+        class="expr-segment w-full min-w-0 text-center bg-transparent border-b-2 border-transparent hover:border-hairline-strong/30 text-white font-mono font-bold focus:outline-none select-all transition duration-150 py-1 cursor-text"
+        aria-label="Edit hour segment"
+        spellcheck="false"
+      />
+      <input 
+        type="text" 
+        id="expr-day" 
+        value="*" 
+        class="expr-segment w-full min-w-0 text-center bg-transparent border-b-2 border-transparent hover:border-hairline-strong/30 text-white font-mono font-bold focus:outline-none select-all transition duration-150 py-1 cursor-text"
+        aria-label="Edit day of month segment"
+        spellcheck="false"
+      />
+      <input 
+        type="text" 
+        id="expr-month" 
+        value="*" 
+        class="expr-segment w-full min-w-0 text-center bg-transparent border-b-2 border-transparent hover:border-hairline-strong/30 text-white font-mono font-bold focus:outline-none select-all transition duration-150 py-1 cursor-text"
+        aria-label="Edit month segment"
+        spellcheck="false"
+      />
+      <input 
+        type="text" 
+        id="expr-weekday" 
+        value="*" 
+        class="expr-segment w-full min-w-0 text-center bg-transparent border-b-2 border-transparent hover:border-hairline-strong/30 text-white font-mono font-bold focus:outline-none select-all transition duration-150 py-1 cursor-text"
+        aria-label="Edit day of week segment"
+        spellcheck="false"
+      />
+      <input 
+        type="text" 
+        id="expr-year" 
+        value="*" 
+        class="expr-segment w-full min-w-0 text-center bg-transparent border-b-2 border-transparent hover:border-hairline-strong/30 text-white font-mono font-bold focus:outline-none select-all transition duration-150 py-1 cursor-text hidden"
+        aria-label="Edit year segment"
+        spellcheck="false"
+      />
+    </div>
+
+    <!-- Hidden standard input for clipboard copying -->
+    <input type="text" id="cron-output" value="* * * * *" readonly class="sr-only" aria-hidden="true" />
+
+    <!-- Copy Button -->
+    <button 
+      type="button" 
+      id="copy-btn" 
+      aria-label="Copy cron expression to clipboard"
+      class="absolute right-3.5 p-2 bg-transparent text-mute hover:text-white hover:bg-hairline-strong/50 border border-hairline hover:border-hairline-strong rounded-lg transition duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link cursor-pointer flex items-center justify-center shrink-0"
+    >
+      <!-- Copy Icon -->
+      <svg id="copy-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+      <!-- Check Icon -->
+      <svg id="check-icon" class="w-5 h-5 hidden text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Copied Toast -->
+  <div id="copy-toast" class="hidden max-w-xs mx-auto text-xs text-center text-emerald-400 bg-emerald-950/20 border border-emerald-900/30 rounded-lg py-2 px-3 flex items-center justify-center gap-2 animate-fade-in" aria-live="polite">
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-live="polite">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+    Expression copied to clipboard!
+  </div>
+
+  <!-- 3. Matching Labels Row -->
+  <div class="max-w-2xl mx-auto pl-4 pr-12 sm:pl-5 sm:pr-14">
+    <div id="labels-grid" class="grid grid-cols-5 text-center font-mono text-[9px] sm:text-xs text-mute uppercase tracking-wider font-semibold">
+      <button type="button" id="lbl-second" class="label-segment hover:text-white cursor-pointer py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link hidden">
+        <span class="hidden sm:inline">second</span>
+        <span class="inline sm:hidden">sec</span>
+      </button>
+      <button type="button" id="lbl-minute" class="label-segment hover:text-white cursor-pointer py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link">
+        <span class="hidden sm:inline">minute</span>
+        <span class="inline sm:hidden">min</span>
+      </button>
+      <button type="button" id="lbl-hour" class="label-segment hover:text-white cursor-pointer py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link">
+        hour
+      </button>
+      <button type="button" id="lbl-day" class="label-segment hover:text-white cursor-pointer py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link">
+        <span class="hidden sm:inline">day(month)</span>
+        <span class="inline sm:hidden">day</span>
+      </button>
+      <button type="button" id="lbl-month" class="label-segment hover:text-white cursor-pointer py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link">
+        <span class="hidden sm:inline">month</span>
+        <span class="inline sm:hidden">mon</span>
+      </button>
+      <button type="button" id="lbl-weekday" class="label-segment hover:text-white cursor-pointer py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link">
+        <span class="hidden sm:inline">weekday</span>
+        <span class="inline sm:hidden">week</span>
+      </button>
+      <button type="button" id="lbl-year" class="label-segment hover:text-white cursor-pointer py-1 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link hidden">
+        year
+      </button>
+    </div>
+  </div>
+
+  <!-- 4. Active Presets Panel -->
+  <div class="max-w-2xl mx-auto mt-6">
+    
+    <!-- SECOND PRESETS PANEL -->
+    <section id="panel-second" class="field-panel hidden transition duration-200 animate-fade-in" aria-label="Configure Second">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
+          <span class="text-white">Second Presets</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 0-59 , - * /</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" class="preset-btn-second px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-second px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="0">0 (at second 0)</button>
+          <button type="button" class="preset-btn-second px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="30">30 (at second 30)</button>
+          <button type="button" class="preset-btn-second px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/5">*/5 (every 5s)</button>
+          <button type="button" class="preset-btn-second px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/10">*/10 (every 10s)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MINUTE PRESETS PANEL -->
+    <section id="panel-minute" class="field-panel transition duration-200 animate-fade-in" aria-label="Configure Minute">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
+          <span class="text-white">Minute Presets</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 0-59 , - * /</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" class="preset-btn-minute px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-minute px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/5">*/5 (every 5m)</button>
+          <button type="button" class="preset-btn-minute px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/15">*/15 (every 15m)</button>
+          <button type="button" class="preset-btn-minute px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="0">0 (at minute 0)</button>
+          <button type="button" class="preset-btn-minute px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="30">30 (at minute 30)</button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- HOUR PRESETS PANEL -->
+    <section id="panel-hour" class="field-panel hidden transition duration-200 animate-fade-in" aria-label="Configure Hour">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
+          <span class="text-white">Hour Presets</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 0-23 , - * /</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" class="preset-btn-hour px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-hour px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/2">*/2 (every 2h)</button>
+          <button type="button" class="preset-btn-hour px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/6">*/6 (every 6h)</button>
+          <button type="button" class="preset-btn-hour px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="0">0 (midnight)</button>
+          <button type="button" class="preset-btn-hour px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="12">12 (noon)</button>
+          <button type="button" class="preset-btn-hour px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="9-17">9-17 (office hours)</button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- DAY OF MONTH PRESETS PANEL -->
+    <section id="panel-day" class="field-panel hidden transition duration-200 animate-fade-in" aria-label="Configure Day of Month">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
+          <span class="text-white">Day of Month Presets</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 1-31 , - * /</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1">1 (1st day)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="15">15 (mid-month)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/5">*/5 (every 5 days)</button>
+          <button type="button" class="preset-btn-day px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1,15">1,15 (1st & 15th)</button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- MONTH PRESETS PANEL -->
+    <section id="panel-month" class="field-panel hidden transition duration-200 animate-fade-in" aria-label="Configure Month">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
+          <span class="text-white">Month Presets</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 1-12 or Jan-Dec , - * /</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" class="preset-btn-month px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-month px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/3">*/3 (quarterly)</button>
+          <button type="button" class="preset-btn-month px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1">1 (January)</button>
+          <button type="button" class="preset-btn-month px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="6">6 (June)</button>
+          <button type="button" class="preset-btn-month px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="12">12 (December)</button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- DAY OF WEEK PRESETS PANEL -->
+    <section id="panel-weekday" class="field-panel hidden transition duration-200 animate-fade-in" aria-label="Configure Day of Week">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
+          <span class="text-white">Day of Week Presets</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 0-6 or Sun-Sat , - * /</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every)</button>
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1-5">1-5 (weekdays)</button>
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="0,6">0,6 (weekends)</button>
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="1">1 (Monday)</button>
+          <button type="button" class="preset-btn-weekday px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="5">5 (Friday)</button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- YEAR PRESETS PANEL -->
+    <section id="panel-year" class="field-panel hidden transition duration-200 animate-fade-in" aria-label="Configure Year">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider">
+          <span class="text-white">Year Presets</span>
+          <span class="text-[10px] text-mute normal-case font-medium">allowed: 1970-2099 , - * /</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <button type="button" class="preset-btn-year px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*">* (every year)</button>
+          <button type="button" class="preset-btn-year px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="2026">2026</button>
+          <button type="button" class="preset-btn-year px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="2027">2027</button>
+          <button type="button" class="preset-btn-year px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="*/2">*/2 (every 2 years)</button>
+          <button type="button" class="preset-btn-year px-2.5 py-1 text-xs font-mono border border-hairline rounded bg-canvas hover:bg-hairline-strong text-body hover:text-white transition cursor-pointer" data-val="2026-2030">2026-2030</button>
+        </div>
+      </div>
+    </section>
+ 
+  </div>
+
+  <!-- 5. Centered Next 5 Run Times Display -->
+  <section class="max-w-2xl mx-auto card-elevation-1 bg-canvas-soft border border-hairline rounded-xl p-5" aria-label="Upcoming schedule execution list">
+    <h3 class="text-[10px] text-mute uppercase font-mono tracking-wider font-bold mb-3 border-b border-hairline pb-2">Upcoming Execution Schedule</h3>
+    <ol id="next-runs-list" class="space-y-2 font-mono text-xs text-body tabular-nums">
+      <!-- Dynamically populated runs -->
+    </ol>
+  </section>
+
+  <!-- 6. Crontab Syntax Cheatsheet -->
+  <section class="max-w-2xl mx-auto card-elevation-1 bg-canvas-soft-2/50 border border-hairline rounded-xl overflow-hidden" aria-labelledby="cheatsheet-title">
+    <div class="bg-canvas border-b border-hairline px-4 py-2.5">
+      <h3 id="cheatsheet-title" class="text-[10px] font-mono uppercase tracking-wider text-white font-bold">Crontab Syntax Cheatsheet</h3>
+    </div>
+    <div class="p-4">
+      <table class="w-full text-left font-mono text-[11px] text-body leading-relaxed divide-y divide-hairline">
+        <tbody>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-link">*</td><td class="py-1.5">any value</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-link">,</td><td class="py-1.5">value list separator</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-link">-</td><td class="py-1.5">range of values</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-link">/</td><td class="py-1.5">step values</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-link">?</td><td class="py-1.5">no specific value (Quartz / AWS EventBridge conflict prevention)</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-mute">@yearly</td><td class="py-1.5 text-mute">run once a year, "0 0 1 1 *" (non-standard)</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-mute">@monthly</td><td class="py-1.5 text-mute">run once a month, "0 0 1 * *" (non-standard)</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-mute">@weekly</td><td class="py-1.5 text-mute">run once a week, "0 0 * * 0" (non-standard)</td></tr>
+          <tr class="hover:bg-canvas-soft-2/80 transition"><td class="py-1.5 pr-4 font-bold text-mute">@daily</td><td class="py-1.5 text-mute">run once a day, "0 0 * * *" (non-standard)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  import { Cron } from 'croner';
+  import cronstrue from 'cronstrue';
+
+  // UI state object
+  const state = {
+    mode: '5', // '5' | '6-seconds' | '6-year'
+    activeField: 'minute',
+    second: { value: '*' },
+    minute: { value: '*' },
+    hour: { value: '*' },
+    day: { value: '*' },
+    month: { value: '*' },
+    weekday: { value: '*' },
+    year: { value: '*' }
+  };
+
+  // Setup DOM elements
+  const el = {
+    // Editable inputs in the main expression box
+    exprSecond: document.getElementById('expr-second'),
+    exprMinute: document.getElementById('expr-minute'),
+    exprHour: document.getElementById('expr-hour'),
+    exprDay: document.getElementById('expr-day'),
+    exprMonth: document.getElementById('expr-month'),
+    exprWeekday: document.getElementById('expr-weekday'),
+    exprYear: document.getElementById('expr-year'),
+
+    // Labels
+    lblSecond: document.getElementById('lbl-second'),
+    lblMinute: document.getElementById('lbl-minute'),
+    lblHour: document.getElementById('lbl-hour'),
+    lblDay: document.getElementById('lbl-day'),
+    lblMonth: document.getElementById('lbl-month'),
+    lblWeekday: document.getElementById('lbl-weekday'),
+    lblYear: document.getElementById('lbl-year'),
+
+    // Panels
+    panelSecond: document.getElementById('panel-second'),
+    panelMinute: document.getElementById('panel-minute'),
+    panelHour: document.getElementById('panel-hour'),
+    panelDay: document.getElementById('panel-day'),
+    panelMonth: document.getElementById('panel-month'),
+    panelWeekday: document.getElementById('panel-weekday'),
+    panelYear: document.getElementById('panel-year'),
+
+    // Grids
+    expressionGrid: document.getElementById('expression-grid'),
+    labelsGrid: document.getElementById('labels-grid'),
+
+    // Mode switch buttons
+    btnMode5: document.getElementById('btn-mode-5'),
+    btnMode6Seconds: document.getElementById('btn-mode-6-seconds'),
+    btnMode6Year: document.getElementById('btn-mode-6-year'),
+
+    // Outputs
+    cronOutput: document.getElementById('cron-output'),
+    cronDescription: document.getElementById('cron-description'),
+    nextRunTime: document.getElementById('next-run-time'),
+    nextRunsList: document.getElementById('next-runs-list'),
+    copyBtn: document.getElementById('copy-btn'),
+    copyToast: document.getElementById('copy-toast'),
+  };
+
+  function getActiveFieldsForMode() {
+    if (state.mode === '5') {
+      return ['minute', 'hour', 'day', 'month', 'weekday'];
+    } else if (state.mode === '6-seconds') {
+      return ['second', 'minute', 'hour', 'day', 'month', 'weekday'];
+    } else {
+      return ['minute', 'hour', 'day', 'month', 'weekday', 'year'];
+    }
+  }
+
+  function getAllFields() {
+    return ['second', 'minute', 'hour', 'day', 'month', 'weekday', 'year'];
+  }
+
+  // Active panel selection logic
+  function setupActiveFieldListeners() {
+    const fields = getAllFields();
+    
+    fields.forEach(f => {
+      const capName = f.charAt(0).toUpperCase() + f.slice(1);
+      const exprInput = el[`expr${capName}`];
+      const lblBtn = el[`lbl${capName}`];
+      
+      // Focus on input opens the corresponding presets panel
+      if (exprInput) {
+        exprInput.addEventListener('focus', () => selectActiveField(f));
+        exprInput.addEventListener('click', () => selectActiveField(f));
+      }
+      
+      // Label click triggers panel activation & focuses on input
+      if (lblBtn) {
+        lblBtn.addEventListener('click', () => {
+          selectActiveField(f);
+          if (exprInput) {
+            exprInput.focus();
+            exprInput.select();
+          }
+        });
+      }
+    });
+  }
+
+  function selectActiveField(fieldName) {
+    state.activeField = fieldName;
+    
+    const fields = getAllFields();
+    
+    fields.forEach(f => {
+      const capName = f.charAt(0).toUpperCase() + f.slice(1);
+      const exprInput = el[`expr${capName}`];
+      const lblBtn = el[`lbl${capName}`];
+      const panel = el[`panel${capName}`];
+      
+      if (!exprInput || !lblBtn || !panel) return;
+      
+      if (f === fieldName) {
+        // Highlight active expr input
+        exprInput.classList.remove('text-white', 'border-transparent');
+        exprInput.classList.add('text-link', 'border-link');
+        
+        // Highlight active label
+        lblBtn.classList.remove('text-mute');
+        lblBtn.classList.add('text-white', 'font-bold');
+        
+        // Show panel
+        panel.classList.remove('hidden');
+      } else {
+        // Reset expr input
+        exprInput.classList.add('text-white', 'border-transparent');
+        exprInput.classList.remove('text-link', 'border-link');
+        
+        // Reset label
+        lblBtn.classList.add('text-mute');
+        lblBtn.classList.remove('text-white', 'font-bold');
+        
+        // Hide panel
+        panel.classList.add('hidden');
+      }
+    });
+  }
+
+  // Setup text inputs change listeners
+  function setupInputListeners() {
+    const fields = getAllFields();
+    
+    fields.forEach(f => {
+      const capName = f.charAt(0).toUpperCase() + f.slice(1);
+      const input = el[`expr${capName}`];
+      if (input) {
+        input.addEventListener('input', () => {
+          state[f].value = input.value;
+          updateGeneratorFromInputs();
+        });
+      }
+    });
+  }
+
+  // Setup preset button listeners
+  function setupPresetListeners() {
+    const fields = getAllFields();
+    
+    fields.forEach(f => {
+      const capName = f.charAt(0).toUpperCase() + f.slice(1);
+      const input = el[`expr${capName}`];
+      const presetBtns = document.querySelectorAll(`.preset-btn-${f}`);
+      
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-val');
+          state[f].value = val;
+          if (input) {
+            input.value = val;
+          }
+          updateGenerator();
+        });
+      });
+    });
+  }
+
+  // Calculate field string based on state
+  function getFieldString(fieldName) {
+    return state[fieldName].value || '*';
+  }
+
+  // Master update loop (pushing values from state to input boxes)
+  function updateGenerator() {
+    const activeFields = getActiveFieldsForMode();
+    activeFields.forEach(f => {
+      const capName = f.charAt(0).toUpperCase() + f.slice(1);
+      const input = el[`expr${capName}`];
+      if (input) {
+        input.value = getFieldString(f);
+      }
+    });
+    
+    const expression = activeFields.map(getFieldString).join(' ');
+    el.cronOutput.value = expression;
+    
+    updateResults(expression);
+  }
+
+  // Input change loop (pulling values from input boxes to state)
+  function updateGeneratorFromInputs() {
+    const activeFields = getActiveFieldsForMode();
+    activeFields.forEach(f => {
+      const capName = f.charAt(0).toUpperCase() + f.slice(1);
+      const input = el[`expr${capName}`];
+      if (input) {
+        state[f].value = input.value;
+      }
+    });
+    
+    const expression = activeFields.map(getFieldString).join(' ');
+    el.cronOutput.value = expression;
+    
+    updateResults(expression);
+  }
+
+  function setMode(mode) {
+    if (state.mode === mode) return;
+    state.mode = mode;
+    
+    // 1. Update active tab buttons style
+    const modes = ['5', '6-seconds', '6-year'];
+    modes.forEach(m => {
+      const btn = el[`btnMode${m === '5' ? '5' : (m === '6-seconds' ? '6Seconds' : '6Year')}`];
+      if (btn) {
+        if (m === mode) {
+          btn.classList.remove('text-mute', 'hover:text-white');
+          btn.classList.add('text-white', 'bg-hairline-strong/60');
+          btn.setAttribute('aria-selected', 'true');
+        } else {
+          btn.classList.remove('text-white', 'bg-hairline-strong/60');
+          btn.classList.add('text-mute', 'hover:text-white');
+          btn.setAttribute('aria-selected', 'false');
+        }
+      }
+    });
+    
+    // 2. Update layout grid columns class
+    if (mode === '5') {
+      el.expressionGrid.classList.remove('grid-cols-6');
+      el.expressionGrid.classList.add('grid-cols-5');
+      
+      el.labelsGrid.classList.remove('grid-cols-6');
+      el.labelsGrid.classList.add('grid-cols-5');
+      
+      // Hide unused inputs
+      el.exprSecond.classList.add('hidden');
+      el.exprYear.classList.add('hidden');
+      el.lblSecond.classList.add('hidden');
+      el.lblYear.classList.add('hidden');
+    } else {
+      el.expressionGrid.classList.remove('grid-cols-5');
+      el.expressionGrid.classList.add('grid-cols-6');
+      
+      el.labelsGrid.classList.remove('grid-cols-5');
+      el.labelsGrid.classList.add('grid-cols-6');
+      
+      if (mode === '6-seconds') {
+        el.exprSecond.classList.remove('hidden');
+        el.exprYear.classList.add('hidden');
+        el.lblSecond.classList.remove('hidden');
+        el.lblYear.classList.add('hidden');
+      } else {
+        el.exprSecond.classList.add('hidden');
+        el.exprYear.classList.remove('hidden');
+        el.lblSecond.classList.add('hidden');
+        el.lblYear.classList.remove('hidden');
+      }
+    }
+    
+    // 3. Shift active field focus if current active field is now hidden
+    const activeFields = getActiveFieldsForMode();
+    if (!activeFields.includes(state.activeField)) {
+      selectActiveField(activeFields[0]);
+    } else {
+      selectActiveField(state.activeField);
+    }
+    
+    // 4. Update generator output
+    updateGenerator();
+  }
+
+  function setupModeSwitcher() {
+    if (el.btnMode5) el.btnMode5.addEventListener('click', () => setMode('5'));
+    if (el.btnMode6Seconds) el.btnMode6Seconds.addEventListener('click', () => setMode('6-seconds'));
+    if (el.btnMode6Year) el.btnMode6Year.addEventListener('click', () => setMode('6-year'));
+  }
+
+  // Format relative time helper
+  function formatRelativeTime(targetDate) {
+    const now = new Date();
+    const diffMs = targetDate.getTime() - now.getTime();
+    const diffSecs = Math.floor(diffMs / 1000);
+    const diffMins = Math.floor(diffSecs / 60);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffSecs < 60) {
+      return 'in a few seconds';
+    } else if (diffMins < 60) {
+      return `in ${diffMins}&nbsp;${diffMins === 1 ? 'min' : 'mins'}`;
+    } else if (diffHours < 24) {
+      return `in ${diffHours}&nbsp;${diffHours === 1 ? 'hr' : 'hrs'}`;
+    } else {
+      return `in ${diffDays}&nbsp;${diffDays === 1 ? 'day' : 'days'}`;
+    }
+  }
+
+  // Parse and display results
+  function updateResults(expression) {
+    // 1. Human Readable Description
+    try {
+      let desc = cronstrue.toString(expression, { use24HourTimeFormat: true });
+      if (desc) {
+        desc = desc.charAt(0).toUpperCase() + desc.slice(1);
+        if (!desc.endsWith('.')) desc += '.';
+      }
+      el.cronDescription.textContent = `“${desc}”`;
+      el.cronDescription.classList.remove('text-rose-500');
+      el.cronDescription.classList.add('text-white');
+    } catch (e) {
+      el.cronDescription.textContent = 'Invalid cron expression.';
+      el.cronDescription.classList.remove('text-white');
+      el.cronDescription.classList.add('text-rose-500');
+      el.nextRunTime.textContent = 'N/A';
+      el.nextRunsList.innerHTML = '<li class="text-rose-500 text-center py-2">Invalid schedule expression</li>';
+      return;
+    }
+    
+    // 2. Next runs
+    try {
+      let evalExpression = expression;
+      if (state.mode === '6-year') {
+        evalExpression = '0 ' + expression; // prepend seconds for croner 7-field evaluation
+      }
+      
+      const cronInstance = new Cron(evalExpression);
+      const nextRuns = cronInstance.nextRuns(5);
+      
+      el.nextRunsList.innerHTML = '';
+      
+      if (nextRuns.length === 0) {
+        el.nextRunTime.textContent = 'N/A';
+        el.nextRunsList.innerHTML = '<li class="text-mute text-center py-2">No upcoming occurrences found</li>';
+        return;
+      }
+      
+      const topDate = nextRuns[0];
+      const tYear = topDate.getFullYear();
+      const tMonth = String(topDate.getMonth() + 1).padStart(2, '0');
+      const tDay = String(topDate.getDate()).padStart(2, '0');
+      const tHours = String(topDate.getHours()).padStart(2, '0');
+      const tMinutes = String(topDate.getMinutes()).padStart(2, '0');
+      const tSeconds = String(topDate.getSeconds()).padStart(2, '0');
+      el.nextRunTime.textContent = `${tYear}-${tMonth}-${tDay} ${tHours}:${tMinutes}:${tSeconds}`;
+      
+      nextRuns.forEach((date, index) => {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center py-1.5 border-b border-hairline last:border-b-0 gap-2';
+        
+        const ordinals = ['1st Run', '2nd Run', '3rd Run', '4th Run', '5th Run'];
+        
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const dateStr = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        
+        const relativeStr = formatRelativeTime(date);
+        
+        li.innerHTML = `
+          <span class="text-[10px] text-mute uppercase font-semibold shrink-0">${ordinals[index]}</span>
+          <span class="text-right text-white font-mono break-all leading-none tabular-nums text-[10px] sm:text-xs">
+            ${dateStr} <span class="text-[10px] text-link ml-1 bg-link/10 px-1 py-0.5 rounded border border-link/20">${relativeStr}</span>
+          </span>
+        `;
+        el.nextRunsList.appendChild(li);
+      });
+    } catch (e) {
+      el.nextRunTime.textContent = 'Error';
+      el.nextRunsList.innerHTML = '<li class="text-rose-500 text-center py-2">Failed to calculate schedule runs</li>';
+    }
+  }
+
+  // Copy to Clipboard logic
+  function setupCopyButton() {
+    const copyIcon = document.getElementById('copy-icon');
+    const checkIcon = document.getElementById('check-icon');
+
+    el.copyBtn.addEventListener('click', () => {
+      const value = el.cronOutput.value;
+      if (!value) return;
+      
+      navigator.clipboard.writeText(value).then(() => {
+        showSuccess();
+      }).catch(err => {
+        el.cronOutput.select();
+        try {
+          document.execCommand('copy');
+          showSuccess();
+        } catch (e) {
+          console.error('Copy failed', e);
+        }
+      });
+    });
+
+    function showSuccess() {
+      if (copyIcon && checkIcon) {
+        copyIcon.classList.add('hidden');
+        checkIcon.classList.remove('hidden');
+      }
+      el.copyToast.classList.remove('hidden');
+      
+      setTimeout(() => {
+        if (copyIcon && checkIcon) {
+          copyIcon.classList.remove('hidden');
+          checkIcon.classList.add('hidden');
+        }
+        el.copyToast.classList.add('hidden');
+      }, 2000);
+    }
+  }
+
+  // Reverse Parse expression to set UI controls
+  function loadCronExpression(expression) {
+    if (!expression) return;
+    
+    const parts = expression.trim().split(/\s+/);
+    if (parts.length < 5) return;
+    
+    let targetMode = '5';
+    if (parts.length === 6) {
+      const lastPart = parts[5];
+      const isYear = /^\d{4}$/.test(lastPart) || 
+                     /^\d{4}-\d{4}$/.test(lastPart) || 
+                     /^\*$/.test(lastPart) && parts.includes('?');
+      const hasFourDigits = /\b\d{4}\b/.test(lastPart);
+      const hasQuestionMark = parts.includes('?');
+      if (hasFourDigits || hasQuestionMark) {
+        targetMode = '6-year';
+      } else {
+        targetMode = '6-seconds';
+      }
+    } else if (parts.length >= 7) {
+      targetMode = '6-year';
+    }
+    
+    setMode(targetMode);
+    
+    const activeFields = getActiveFieldsForMode();
+    activeFields.forEach((f, idx) => {
+      const part = parts[idx] || '*';
+      state[f].value = part;
+      
+      const capName = f.charAt(0).toUpperCase() + f.slice(1);
+      const input = el[`expr${capName}`];
+      if (input) {
+        input.value = part;
+      }
+    });
+    
+    updateGenerator();
+  }
+
+  // Initialize
+  function init() {
+    setupInputListeners();
+    setupPresetListeners();
+    setupActiveFieldListeners();
+    setupModeSwitcher();
+    setupCopyButton();
+    
+    // Set initial values in state
+    state.mode = '5';
+    state.second.value = '*';
+    state.minute.value = '*';
+    state.hour.value = '*';
+    state.day.value = '*';
+    state.month.value = '*';
+    state.weekday.value = '*';
+    state.year.value = '*';
+    
+    window.loadCronExpression = loadCronExpression;
+    
+    // Set initial active field representation (Minute)
+    selectActiveField('minute');
+    
+    // Initial run
+    updateGenerator();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.15s ease-out forwards;
+  }
+</style>

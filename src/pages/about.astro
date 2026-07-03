@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout 
+  title="About Us | CronGen" 
+  description="Learn about CronGen, a professional and interactive online cron expression generator, translator, and evaluator designed for software developers and system administrators."
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header />
+
+  <!-- Main Content Layout -->
+  <main id="main-content" class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-12">
+    
+    <!-- Hero Header -->
+    <section class="space-y-4">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-link/10 text-link border border-link/20">
+        About the Project
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        Simplifying Scheduling for Developers.
+      </h1>
+      <p class="text-sm sm:text-base text-body leading-relaxed max-w-2xl">
+        CronGen was created out of a simple need: to make the generation, translation, and evaluation of cron schedule expressions highly visual, precise, and fast.
+      </p>
+    </section>
+
+    <!-- Project Goals Card -->
+    <section class="bg-canvas-soft border border-hairline rounded-xl p-6 sm:p-8 space-y-6">
+      <h2 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+        <span class="w-1 h-5 bg-link rounded-full"></span>
+        Our Core Philosophy
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs sm:text-sm text-body leading-relaxed">
+        <div class="space-y-2">
+          <h3 class="font-bold text-white font-mono uppercase text-link text-xs">Visual Precision</h3>
+          <p>
+            Standard cron syntax is inherently cryptic. CronGen visualises the expression directly, mapping segments to interactive slots so you can spot errors before deploying scripts.
+          </p>
+        </div>
+        <div class="space-y-2">
+          <h3 class="font-bold text-white font-mono uppercase text-link text-xs">Cross-Platform Flexibility</h3>
+          <p>
+            Whether you use standard Unix crontab, segundos-first formats (Quartz/Spring), or year-last cloud formats (AWS EventBridge), CronGen handles them with single-click toggle efficiency.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Underpinnings -->
+    <section class="space-y-4 text-xs sm:text-sm text-body leading-relaxed">
+      <h2 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+        <span class="w-1 h-5 bg-link rounded-full"></span>
+        How It Works
+      </h2>
+      <p>
+        CronGen leverages premium libraries like <code class="text-link font-mono bg-canvas-soft border border-hairline px-1 rounded text-xs">cronstrue</code> to translate cron schedules into human-readable plain language and <code class="text-link font-mono bg-canvas-soft border border-hairline px-1 rounded text-xs">croner</code> to calculate precise upcoming runtime execution timelines. The application is built entirely as a static Multi-Page Application (MPA) using Astro, insuring lightning-fast speeds, zero client-side framework bloat, and optimal search engine discoverability.
+      </p>
+      <p>
+        If you find this utility useful, feel free to share it with your development teams or integrate its generated strings into your system configurations.
+      </p>
+    </section>
+
+  </main>
+
+  <Footer />
+</Layout>
