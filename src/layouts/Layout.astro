@@ -10,6 +10,9 @@ const {
 	title = "Cron Expression Generator & Builder | CronGen",
 	description = "Free online cron expression generator. Build, validate, and understand crontab schedules in seconds. Learn how to write cron jobs with CronGen."
 } = Astro.props;
+
+// Dynamically resolve canonical URL for each subpage
+const canonicalURL = new URL(Astro.url.pathname, "https://crongen.dev");
 ---
 
 <!doctype html>
@@ -51,7 +54,7 @@ const {
 		<meta property="twitter:image" content="https://crongen.dev/og-image.png" />
 
 		<meta name="robots" content="index, follow" />
-		<link rel="canonical" href="https://crongen.dev/" />
+		<link rel="canonical" href={canonicalURL.href} />
 	</head>
 	<body class="bg-canvas text-ink antialiased selection:bg-primary selection:text-on-primary">
 		<!-- Skip to content link for keyboard accessibility -->
