@@ -1,22 +1,36 @@
 ---
 import "../styles/global.css";
+import { getRawPathname, getLocalizedPathname, SUPPORTED_LOCALES, type SupportedLocale } from "../i18n/utils";
 
 interface Props {
 	title?: string;
 	description?: string;
+	lang?: SupportedLocale;
 }
 
 const { 
 	title = "Cron Expression Generator & Builder | CronGen",
-	description = "Free online cron expression generator. Build, validate, and understand crontab schedules in seconds. Learn how to write cron jobs with CronGen."
+	description = "Free online cron expression generator. Build, validate, and understand crontab schedules in seconds. Learn how to write cron jobs with CronGen.",
+	lang = "en"
 } = Astro.props;
 
-// Dynamically resolve canonical URL for each subpage
-const canonicalURL = new URL(Astro.url.pathname, "https://crongen.dev");
+const siteDomain = "https://crongen.dev";
+const rawPathname = getRawPathname(Astro.url.pathname);
+const canonicalURL = new URL(Astro.url.pathname, siteDomain);
+
+const hreflangLinks = SUPPORTED_LOCALES.map(locale => {
+	const localizedPath = getLocalizedPathname(rawPathname, locale.code);
+	return {
+		lang: locale.code,
+		href: `${siteDomain}${localizedPath}`
+	};
+});
+
+const defaultHreflangHref = `${siteDomain}${getLocalizedPathname(rawPathname, 'en')}`;
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang={lang} class="dark">
 	<head>
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-KMS8CZE763"></script>
@@ -27,6 +41,10 @@ const canonicalURL = new URL(Astro.url.pathname, "https://crongen.dev");
 
 			gtag('config', 'G-KMS8CZE763');
 		</script>
+
+		<!--Google Adsense-->
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4051618156372683"
+     	crossorigin="anonymous"></script>
 
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,16 +57,22 @@ const canonicalURL = new URL(Astro.url.pathname, "https://crongen.dev");
 		<meta name="title" content={title} />
 		<meta name="description" content={description} />
 
+		<!-- Hreflang SEO Tags for Multi-Language Support -->
+		{hreflangLinks.map(link => (
+			<link rel="alternate" hreflang={link.lang} href={link.href} />
+		))}
+		<link rel="alternate" hreflang="x-default" href={defaultHreflangHref} />
+
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://crongen.dev/" />
+		<meta property="og:url" content={canonicalURL.href} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content="https://crongen.dev/og-image.png" />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="https://crongen.dev/" />
+		<meta property="twitter:url" content={canonicalURL.href} />
 		<meta property="twitter:title" content={title} />
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content="https://crongen.dev/og-image.png" />

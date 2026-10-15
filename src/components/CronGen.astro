@@ -1,8 +1,17 @@
 ---
 // src/components/CronGen.astro
+import { useTranslations, getCronstrueLocale, type SupportedLocale } from "../i18n/utils";
+
+interface Props {
+  lang?: SupportedLocale;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const cronstrueLocale = getCronstrueLocale(lang);
 ---
 
-<div class="space-y-8 max-w-3xl mx-auto">
+<div id="cron-gen-container" data-lang={lang} data-cronstrue-locale={cronstrueLocale} class="space-y-8 max-w-3xl mx-auto">
   
   <!-- 1. Centered Live Results Header -->
   <div class="text-center space-y-3">
@@ -811,7 +820,9 @@
   function updateResults(expression) {
     // 1. Human Readable Description
     try {
-      let desc = cronstrue.toString(expression, { use24HourTimeFormat: true });
+      const container = document.getElementById('cron-gen-container');
+      const cronLocale = container?.getAttribute('data-cronstrue-locale') || 'en';
+      let desc = cronstrue.toString(expression, { use24HourTimeFormat: true, locale: cronLocale });
       if (desc) {
         desc = desc.charAt(0).toUpperCase() + desc.slice(1);
         if (!desc.endsWith('.')) desc += '.';

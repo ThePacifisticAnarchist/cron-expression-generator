@@ -1,0 +1,268 @@
+---
+// src/pages/blog/index.astro
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { blogPosts } from "../../data/blog";
+import { useTranslations } from "../../i18n/utils";
+
+const lang = "en";
+const t = useTranslations(lang);
+const featuredPost = blogPosts.find((p) => p.featured) || blogPosts[0];
+const allPosts = blogPosts;
+
+const categories = ["All", "Guides", "DevOps", "Syntax", "Best Practices"];
+---
+
+<Layout 
+  title="CronGen Blog | Cron Guides, Crontab Tutorials & Backend Scheduling"
+  description="Explore comprehensive tutorials, syntax cheat sheets, and best practices for writing cron expressions, crontab automation, and cloud job scheduling."
+  lang={lang}
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header lang={lang} />
+
+  <main id="main-content" class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 space-y-16">
+    
+    <!-- Hero / Breadcrumb Header -->
+    <header class="max-w-3xl space-y-4">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-xs font-mono text-mute">
+        <a href="/" class="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link rounded">Home</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white font-medium" aria-current="page">Blog</span>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-link/10 text-link border border-link/20">
+          Engineering & Guides
+        </span>
+        <span class="text-xs font-mono text-mute tabular-nums">1 Published Article</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight text-balance">
+        CronGen Engineering Blog.
+      </h1>
+      <p class="text-sm sm:text-base text-body leading-relaxed max-w-2xl text-balance">
+        Deep-dive technical guides, cron syntax cheat sheets, and operational wisdom for backend engineers, system administrators, and DevOps practitioners.
+      </p>
+    </header>
+
+    <!-- Categories / Tags Filter Bar -->
+    <section aria-label="Article Categories" class="flex flex-wrap items-center gap-2 border-b border-hairline pb-6">
+      {categories.map((cat, idx) => (
+        <button
+          type="button"
+          data-category={cat}
+          class={`category-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link ${
+            idx === 0
+              ? 'bg-white text-black font-semibold shadow-sm'
+              : 'bg-canvas-soft border border-hairline text-body hover:text-white hover:border-hairline-strong'
+          }`}
+        >
+          {cat}
+        </button>
+      ))}
+    </section>
+
+    <!-- Featured Post Hero Card -->
+    {featuredPost && (
+      <section aria-label="Featured Article" class="space-y-4">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-4 bg-link rounded-full"></span>
+          <h2 class="text-xs font-mono uppercase tracking-wider text-mute">Featured Guide</h2>
+        </div>
+
+        <article class="group relative bg-gradient-to-b from-canvas-soft-2 to-canvas-soft border border-hairline hover:border-link/40 rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-300 shadow-xl hover:shadow-link/5">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div class="space-y-4 max-w-3xl">
+              <!-- Meta Badges -->
+              <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
+                <span class="bg-link/15 text-link font-medium px-2.5 py-0.5 rounded-md border border-link/25">
+                  {featuredPost.category}
+                </span>
+                <span class="text-mute tabular-nums">{featuredPost.readTime}</span>
+                <span class="text-mute" aria-hidden="true">•</span>
+                <time datetime="2026-10-15" class="text-mute tabular-nums">{featuredPost.publishDate}</time>
+              </div>
+
+              <!-- Title & Subtitle -->
+              <h3 class="text-2xl sm:text-3xl font-bold text-white group-hover:text-link transition-colors tracking-tight text-balance">
+                <a href={`/blog/${featuredPost.slug}`} class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link rounded-sm">
+                  {featuredPost.title}
+                </a>
+              </h3>
+
+              <p class="text-xs sm:text-sm text-body leading-relaxed line-clamp-3">
+                {featuredPost.description}
+              </p>
+
+              <!-- Tags List -->
+              <div class="flex flex-wrap gap-2 pt-2">
+                {featuredPost.tags.map((tag) => (
+                  <span class="text-[11px] font-mono text-mute bg-canvas-soft-2 border border-hairline px-2 py-0.5 rounded">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <!-- CTA & Author Column -->
+            <div class="flex flex-col sm:flex-row lg:flex-col justify-between items-start lg:items-end gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-hairline">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-link/20 border border-link/30 flex items-center justify-center text-link font-mono font-bold text-sm">
+                  CG
+                </div>
+                <div>
+                  <p class="text-xs font-medium text-white">{featuredPost.author.name}</p>
+                  <p class="text-[11px] font-mono text-mute">{featuredPost.author.role}</p>
+                </div>
+              </div>
+
+              <a 
+                href={`/blog/${featuredPost.slug}`}
+                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black text-xs font-mono font-semibold transition-all duration-200 shadow hover:shadow-md group-hover:translate-x-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
+                aria-label={`Read guide: ${featuredPost.title}`}
+              >
+                <span>Read Full Guide</span>
+                <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
+    )}
+
+    <!-- All Articles Listing Grid -->
+    <section aria-label="All Blog Articles" class="space-y-6">
+      <div class="flex items-center justify-between border-b border-hairline pb-4">
+        <h2 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+          <span class="w-1.5 h-5 bg-link rounded-full"></span>
+          Latest Articles & Tutorials
+        </h2>
+        <span class="text-xs font-mono text-mute tabular-nums">Showing {allPosts.length} post</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="posts-grid">
+        {allPosts.map((post) => (
+          <article 
+            data-post-category={post.category} 
+            class="post-card bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-6 transition-all duration-200 flex flex-col justify-between group space-y-4"
+          >
+            <div class="space-y-3">
+              <div class="flex items-center gap-3 text-[11px] font-mono">
+                <span class="text-link bg-link/10 border border-link/20 px-2 py-0.5 rounded">
+                  {post.category}
+                </span>
+                <span class="text-mute tabular-nums">{post.readTime}</span>
+                <span class="text-mute" aria-hidden="true">•</span>
+                <time datetime="2026-10-15" class="text-mute tabular-nums">{post.publishDate}</time>
+              </div>
+
+              <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-link transition-colors tracking-tight text-balance">
+                <a href={`/blog/${post.slug}`} class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link rounded-sm">
+                  {post.title}
+                </a>
+              </h3>
+
+              <p class="text-xs text-body leading-relaxed line-clamp-3">
+                {post.description}
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-hairline/60 flex items-center justify-between">
+              <span class="text-xs font-mono text-mute">{post.author.name}</span>
+              <a 
+                href={`/blog/${post.slug}`}
+                class="inline-flex items-center gap-1.5 text-xs font-mono text-link hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-link rounded"
+              >
+                Read Article
+                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))}
+
+        <!-- Upcoming Topics Teaser Card -->
+        <article class="border border-dashed border-hairline-strong bg-canvas-soft/40 rounded-xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center gap-2 text-[11px] font-mono text-mute">
+              <span class="w-2 h-2 rounded-full bg-warning animate-pulse"></span>
+              <span>In Editorial Pipeline</span>
+            </div>
+            <h3 class="text-base font-bold text-white/80 tracking-tight">
+              Cron in AWS EventBridge vs Kubernetes CronJob
+            </h3>
+            <p class="text-xs text-body leading-relaxed">
+              A comprehensive architecture comparison of managed cloud triggers versus native Kubernetes scheduling patterns.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-hairline/40 flex items-center justify-between text-xs font-mono text-mute">
+            <span>Coming Next Week</span>
+            <span class="text-[11px] bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Preview</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Bottom Interactive Banner / CTA -->
+    <section class="bg-gradient-to-r from-canvas-soft-2 via-canvas-soft to-canvas-soft-2 border border-hairline rounded-2xl p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+      <div class="space-y-2 max-w-xl text-center md:text-left">
+        <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+          Ready to Build Your Cron Expression?
+        </h2>
+        <p class="text-xs sm:text-sm text-body leading-relaxed">
+          Switch from theory to practice. Use our interactive visual generator to test patterns, inspect upcoming execution schedules, and copy valid crontab strings instantly.
+        </p>
+      </div>
+      <a 
+        href="/" 
+        class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-link hover:bg-link-deep text-white text-xs font-mono font-semibold transition-colors shadow-lg shadow-link/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-canvas whitespace-nowrap"
+      >
+        <span>Open Cron Generator</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      </a>
+    </section>
+
+  </main>
+
+  <Footer lang={lang} />
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.category-filter-btn');
+    const cards = document.querySelectorAll('.post-card');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const category = btn.getAttribute('data-category');
+        
+        // Update active button styles
+        buttons.forEach((b) => {
+          b.classList.remove('bg-white', 'text-black', 'font-semibold', 'shadow-sm');
+          b.classList.add('bg-canvas-soft', 'border', 'border-hairline', 'text-body');
+        });
+        btn.classList.add('bg-white', 'text-black', 'font-semibold', 'shadow-sm');
+        btn.classList.remove('bg-canvas-soft', 'border', 'border-hairline', 'text-body');
+
+        // Filter cards
+        cards.forEach((card) => {
+          const cardCat = card.getAttribute('data-post-category');
+          if (category === 'All' || cardCat === category) {
+            (card as HTMLElement).style.display = 'flex';
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>

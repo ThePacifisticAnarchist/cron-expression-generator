@@ -2,16 +2,21 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { useTranslations } from "../i18n/utils";
+
+const lang = "en";
+const t = useTranslations(lang);
 ---
 
 <Layout 
-  title="About Us | CronGen" 
-  description="Learn about CronGen, a professional and interactive online cron expression generator, translator, and evaluator designed for software developers and system administrators."
+  title={t('meta.aboutTitle')} 
+  description={t('meta.aboutDesc')}
+  lang={lang}
 >
   <!-- Decorative Top Mesh Gradient -->
   <div class="mesh-gradient" aria-hidden="true"></div>
 
-  <Header />
+  <Header lang={lang} />
 
   <!-- Main Content Layout -->
   <main id="main-content" class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-12">
@@ -45,7 +50,7 @@ import Footer from "../components/Footer.astro";
         <div class="space-y-2">
           <h3 class="font-bold text-white font-mono uppercase text-link text-xs">Cross-Platform Flexibility</h3>
           <p>
-            Whether you use standard Unix crontab, segundos-first formats (Quartz/Spring), or year-last cloud formats (AWS EventBridge), CronGen handles them with single-click toggle efficiency.
+            Whether you use standard Unix crontab, seconds-first formats (Quartz/Spring), or year-last cloud formats (AWS EventBridge), CronGen handles them with single-click toggle efficiency.
           </p>
         </div>
       </div>
@@ -67,5 +72,5 @@ import Footer from "../components/Footer.astro";
 
   </main>
 
-  <Footer />
+  <Footer lang={lang} />
 </Layout>

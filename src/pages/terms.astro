@@ -2,16 +2,21 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { useTranslations } from "../i18n/utils";
+
+const lang = "en";
+const t = useTranslations(lang);
 ---
 
 <Layout 
-  title="Terms & Conditions | CronGen" 
-  description="Read our terms and conditions of use. CronGen is a free open-source utility provided as-is, without warranty of any kind."
+  title={t('meta.termsTitle')} 
+  description={t('meta.termsDesc')}
+  lang={lang}
 >
   <!-- Decorative Top Mesh Gradient -->
   <div class="mesh-gradient" aria-hidden="true"></div>
 
-  <Header />
+  <Header lang={lang} />
 
   <!-- Main Content Layout -->
   <main id="main-content" class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-12">
@@ -60,5 +65,5 @@ import Footer from "../components/Footer.astro";
 
   </main>
 
-  <Footer />
+  <Footer lang={lang} />
 </Layout>

@@ -1,0 +1,52 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { SUPPORTED_LOCALES, useTranslations, type SupportedLocale } from "../../i18n/utils";
+
+export function getStaticPaths() {
+  return SUPPORTED_LOCALES.filter(l => l.code !== 'en').map(l => ({
+    params: { lang: l.code },
+  }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLocale };
+const t = useTranslations(lang);
+---
+
+<Layout 
+  title={t('meta.privacyTitle')} 
+  description={t('meta.privacyDesc')}
+  lang={lang}
+>
+  <!-- Decorative Top Mesh Gradient -->
+  <div class="mesh-gradient" aria-hidden="true"></div>
+
+  <Header lang={lang} />
+
+  <!-- Main Content Layout -->
+  <main id="main-content" class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-12">
+    
+    <!-- Header -->
+    <section class="space-y-4">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-link/10 text-link border border-link/20">
+        {t('nav.privacy')}
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        {t('meta.privacyTitle')}
+      </h1>
+    </section>
+
+    <!-- Privacy Statements -->
+    <section class="space-y-6 text-xs sm:text-sm text-body leading-relaxed">
+      <div class="space-y-2">
+        <p>
+          {t('meta.privacyDesc')}
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer lang={lang} />
+</Layout>

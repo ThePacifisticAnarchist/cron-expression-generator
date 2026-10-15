@@ -2,16 +2,21 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { useTranslations } from "../i18n/utils";
+
+const lang = "en";
+const t = useTranslations(lang);
 ---
 
 <Layout 
-  title="Contact Us | CronGen" 
-  description="Get in touch with the team behind CronGen. Send questions, feedback, or schedule parser improvements."
+  title={t('meta.contactTitle')} 
+  description={t('meta.contactDesc')}
+  lang={lang}
 >
   <!-- Decorative Top Mesh Gradient -->
   <div class="mesh-gradient" aria-hidden="true"></div>
 
-  <Header />
+  <Header lang={lang} />
 
   <!-- Main Content Layout -->
   <main id="main-content" class="relative z-10 max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-10">
@@ -118,5 +123,5 @@ import Footer from "../components/Footer.astro";
     });
   </script>
 
-  <Footer />
+  <Footer lang={lang} />
 </Layout>
