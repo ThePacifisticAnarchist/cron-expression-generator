@@ -22,7 +22,7 @@ const lang = "en";
 // Schema.org structured data for SEO
 const articleSchema = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
+  "@type": "TechArticle",
   "headline": post.title,
   "description": post.description,
   "datePublished": "2026-10-15T09:00:00+00:00",
@@ -85,6 +85,8 @@ const articleSchema = {
         <span class="text-mute tabular-nums">{post.readTime}</span>
         <span class="text-mute" aria-hidden="true">•</span>
         <time datetime="2026-10-15" class="text-mute tabular-nums">{post.publishDate}</time>
+        <span class="text-mute" aria-hidden="true">•</span>
+        <span class="text-emerald-400 font-medium">Comprehensive Master Guide</span>
       </div>
 
       <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-[1.15] text-balance">
@@ -147,13 +149,15 @@ const articleSchema = {
 
           <nav class="space-y-1 text-xs font-mono">
             <a href="#the-problem" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">1. The Problem with Crontab</a>
-            <a href="#cron-anatomy" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">2. Anatomy of 5 Fields</a>
-            <a href="#special-characters" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">3. Special Characters (* , - /)</a>
+            <a href="#cron-anatomy" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">2. Anatomy of 5 & 6 Fields</a>
+            <a href="#special-characters" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">3. Operators (* , - / ? L W #)</a>
             <a href="#how-to-use-crongen" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">4. How to Use CronGen</a>
-            <a href="#production-recipes" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">5. 10 Production Recipes</a>
-            <a href="#common-traps" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">6. 4 Dangerous Traps</a>
-            <a href="#deploying-cron" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">7. Deployment Across Stacks</a>
-            <a href="#faq" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">8. Frequently Asked Questions</a>
+            <a href="#post-mortems" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">5. Real-World Case Studies</a>
+            <a href="#production-hardening" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">6. Production Hardening</a>
+            <a href="#multi-stack-code" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">7. Code Implementation Guides</a>
+            <a href="#preflight-checklist" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">8. Pre-Flight Checklist</a>
+            <a href="#production-recipes" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">9. 12 Production Recipes</a>
+            <a href="#faq" class="toc-link block py-1.5 px-2 rounded text-body hover:text-white hover:bg-canvas-soft-2 transition-colors">10. Developer FAQs</a>
           </nav>
         </div>
 
@@ -170,29 +174,29 @@ const articleSchema = {
       </aside>
 
       <!-- Main Article Body -->
-      <article id="article-content" class="lg:col-span-9 max-w-3xl space-y-12 text-body leading-relaxed text-sm sm:text-base">
+      <article id="article-content" class="lg:col-span-9 max-w-3xl space-y-14 text-body leading-relaxed text-sm sm:text-base">
 
         <!-- Section 1 -->
         <section id="the-problem" class="scroll-mt-24 space-y-4">
           <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
             <span class="w-1.5 h-6 bg-link rounded-full"></span>
-            1. The Problem with Cron Syntax
+            1. The Problem with Cron Syntax & Hidden Production Costs
           </h2>
           <p>
-            Every software engineer has experienced it: you write a crontab schedule expecting a script to run once every night at 2:00 AM, only to wake up the next morning and discover your database crashed because your task ran <strong>every single minute between 2:00 AM and 2:59 AM</strong> (60 executions!).
+            Every software engineer and DevOps practitioner has a war story about a background task gone wrong. You configure a scheduled backup thinking it will run once nightly at 2:00 AM, only to wake up the next morning to an alert storm: your primary database locked up because the script executed <strong>every single minute between 2:00 AM and 2:59 AM</strong> (60 overlapping executions!).
           </p>
           <p>
-            Cron syntax was designed in the late 1970s for Bell Labs Unix systems. While it has survived for over four decades due to its raw efficiency and ubiquitous adoption, its notation is notoriously cryptic, terse, and forgiving of catastrophic mistakes.
+            Cron syntax was designed in 1979 for Version 7 Unix. While it has survived for over four decades due to its raw runtime efficiency and zero-overhead footprint, its syntax is notoriously cryptic, unforgiving of typos, and inconsistent across operating systems and cloud providers.
           </p>
 
           <!-- Callout Alert Note -->
-          <div class="bg-canvas-soft border-l-4 border-link p-4 rounded-r-xl space-y-1 text-xs sm:text-sm">
+          <div class="bg-canvas-soft border-l-4 border-link p-5 rounded-r-xl space-y-2 text-xs sm:text-sm">
             <p class="font-bold text-white font-mono uppercase text-xs flex items-center gap-1.5">
               <svg class="w-4 h-4 text-link" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              Why Visual Generators Matter
+              The High Price of Human Syntax Calculation
             </p>
-            <p class="text-body">
-              A modern cron expression generator bridges the cognitive gap. Instead of forcing you to mentally calculate complex ranges and modular divisions, tools like <strong>CronGen</strong> provide immediate human-readable feedback and exact simulation of the next execution timestamps.
+            <p class="text-body leading-relaxed">
+              When developers calculate cron expressions in their heads, they are forced to mentally simulate modulo divisions, non-intuitive Day-of-Month vs Day-of-Week OR logic, and zero-indexed calendar rules. Visual generators like <strong>CronGen</strong> replace guesswork with deterministic verification: offering natural-language translations (<code class="text-link font-mono">cronstrue</code>) and calculated upcoming runtime simulations (<code class="text-link font-mono">croner</code>).
             </p>
           </div>
         </section>
@@ -201,17 +205,17 @@ const articleSchema = {
         <section id="cron-anatomy" class="scroll-mt-24 space-y-6">
           <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
             <span class="w-1.5 h-6 bg-link rounded-full"></span>
-            2. Anatomy of a Cron Expression (The 5 Fields)
+            2. Anatomy of a Cron Expression (Standard 5-Field vs 6 & 7-Field)
           </h2>
           <p>
-            Standard POSIX/Unix crontab comprises five space-separated fields. Each position controls a specific unit of chronological time from left to right:
+            Standard POSIX/Unix crontab comprises five space-separated fields. Each position controls a specific unit of chronological time evaluated from left to right:
           </p>
 
-          <!-- ASCII / Graphic Diagram Box -->
-          <div class="bg-canvas-soft-2 border border-hairline rounded-xl p-5 overflow-x-auto font-mono text-xs text-white">
+          <!-- Graphic Diagram Box -->
+          <div class="bg-canvas-soft-2 border border-hairline rounded-xl p-5 overflow-x-auto font-mono text-xs text-white shadow-inner">
             <pre class="leading-relaxed">
 ┌───────────── Minute (0 - 59)
-│ ┌─────────── Hour (0 - 23)
+│ ┌─────────── Hour (0 - 23, 24-hour military clock)
 │ │ ┌───────── Day of Month (1 - 31)
 │ │ │ ┌─────── Month (1 - 12 or JAN - DEC)
 │ │ │ │ ┌───── Day of Week (0 - 6 or SUN - SAT, 0 = Sunday)
@@ -225,9 +229,9 @@ const articleSchema = {
               <thead class="bg-canvas-soft text-white border-b border-hairline">
                 <tr>
                   <th scope="col" class="py-3 px-4">Field</th>
-                  <th scope="col" class="py-3 px-4">Allowed Values</th>
+                  <th scope="col" class="py-3 px-4">Allowed Range</th>
                   <th scope="col" class="py-3 px-4">Supported Operators</th>
-                  <th scope="col" class="py-3 px-4">Aliases</th>
+                  <th scope="col" class="py-3 px-4">Valid Aliases</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-hairline bg-canvas-soft/40 text-body">
@@ -265,77 +269,109 @@ const articleSchema = {
             </table>
           </div>
 
-          <p class="text-xs sm:text-sm">
-            <span class="text-white font-semibold">Note on 6-Field Variations:</span> While standard Unix systems use 5 fields, Java frameworks (Quartz, Spring) prepend a <strong>Seconds</strong> field (<code class="text-link font-mono bg-canvas-soft px-1 rounded">0 15 10 * * ?</code>), and cloud platforms like <strong>AWS EventBridge</strong> append a <strong>Year</strong> field (<code class="text-link font-mono bg-canvas-soft px-1 rounded">0 12 * * ? *</code>).
-          </p>
+          <div class="space-y-3 pt-2">
+            <h3 class="text-base font-bold text-white">Understanding Extended 6 & 7-Field Dialects</h3>
+            <p class="text-xs sm:text-sm text-body leading-relaxed">
+              When working across enterprise frameworks, the 5-field Unix standard is often augmented:
+            </p>
+            <ul class="list-disc list-inside space-y-1.5 text-xs font-mono text-body">
+              <li><strong class="text-white">Java Quartz & Spring:</strong> Prepend a <strong>Seconds</strong> field (0-59) as position 1 (<code class="text-link">0 15 10 * * ?</code>), with an optional 7th field for Year (1970–2099).</li>
+              <li><strong class="text-white">AWS EventBridge:</strong> Requires 6 fields where the 6th field is <strong>Year</strong> (<code class="text-link">0 12 * * ? *</code>). AWS enforces UTC and requires the question mark (<code class="text-white">?</code>) in either Day-of-Month or Day-of-Week.</li>
+              <li><strong class="text-white">Azure Functions (NCRONTAB):</strong> Uses a 6-field format with Seconds at the start (<code class="text-link">0 */5 * * * *</code>).</li>
+            </ul>
+          </div>
         </section>
 
         <!-- Section 3 -->
         <section id="special-characters" class="scroll-mt-24 space-y-6">
           <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
             <span class="w-1.5 h-6 bg-link rounded-full"></span>
-            3. Demystifying Special Characters & Operators
+            3. The Complete Operator Encyclopedia (* , - / ? L W #)
           </h2>
           <p>
-            The true expressive power of cron comes from its specialized operators. Here is how each character behaves:
+            Cron achieves its expressive flexibility through eight distinct punctuation characters. Here is a comprehensive reference to how each operates:
           </p>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-4">
             
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-4 space-y-2">
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-lg font-mono font-bold text-link">* (Asterisk / Wildcard)</span>
-                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Matches All</span>
+                <span class="text-base font-mono font-bold text-link">* (Asterisk / Wildcard)</span>
+                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Universal</span>
               </div>
-              <p class="text-xs text-body leading-relaxed">
-                Represents every possible value in that field. In the minute field, <code class="text-white font-mono">*</code> means "every minute". In the month field, it means "every month".
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Matches every possible value within that field. In the minute field, <code class="text-white font-mono">*</code> matches all 60 minutes. In the day-of-week field, it matches Sunday through Saturday.
               </p>
-              <div class="bg-canvas-soft-2 rounded p-2 text-xs font-mono text-white flex justify-between items-center">
-                <span>* * * * *</span>
-                <span class="text-mute text-[11px]">Every minute</span>
-              </div>
             </div>
 
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-4 space-y-2">
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-lg font-mono font-bold text-link">, (Comma / List)</span>
-                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Multiple Values</span>
+                <span class="text-base font-mono font-bold text-link">, (Comma / List Union)</span>
+                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Discrete Values</span>
               </div>
-              <p class="text-xs text-body leading-relaxed">
-                Specifies a list of discrete values. You can execute jobs on specific minutes, specific days of the month, or specific weekdays.
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Combines multiple individual values into an execution set. For example, <code class="text-white font-mono">0 9,13,18 * * *</code> fires precisely at 9:00 AM, 1:00 PM, and 6:00 PM every day.
               </p>
-              <div class="bg-canvas-soft-2 rounded p-2 text-xs font-mono text-white flex justify-between items-center">
-                <span>0 9,13,18 * * *</span>
-                <span class="text-mute text-[11px]">At 9am, 1pm, 6pm</span>
-              </div>
             </div>
 
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-4 space-y-2">
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-lg font-mono font-bold text-link">- (Hyphen / Range)</span>
+                <span class="text-base font-mono font-bold text-link">- (Hyphen / Inclusive Range)</span>
                 <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Continuous Range</span>
               </div>
-              <p class="text-xs text-body leading-relaxed">
-                Defines an inclusive range of values. Perfect for restricting tasks to office hours or specific weekdays (Monday through Friday).
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Specifies a continuous, inclusive interval between a lower and upper bound. <code class="text-white font-mono">0 9-17 * * 1-5</code> runs every hour between 9 AM and 5 PM on Monday through Friday.
               </p>
-              <div class="bg-canvas-soft-2 rounded p-2 text-xs font-mono text-white flex justify-between items-center">
-                <span>0 9-17 * * 1-5</span>
-                <span class="text-mute text-[11px]">Business hours</span>
-              </div>
             </div>
 
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-4 space-y-2">
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-lg font-mono font-bold text-link">/ (Slash / Step)</span>
-                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Interval Steps</span>
+                <span class="text-base font-mono font-bold text-link">/ (Slash / Step Increments)</span>
+                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Modulo Step</span>
               </div>
-              <p class="text-xs text-body leading-relaxed">
-                Specifies rate increments. The syntax <code class="text-white font-mono">*/15</code> in minutes means "every 15 minutes starting from 0".
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Specifies periodic step rates within a range. <code class="text-white font-mono">*/15</code> in the minute slot runs at 0, 15, 30, and 45. You can also specify an offset start: <code class="text-white font-mono">5/10</code> runs at minutes 5, 15, 25, 35, 45, 55.
               </p>
-              <div class="bg-canvas-soft-2 rounded p-2 text-xs font-mono text-white flex justify-between items-center">
-                <span>*/15 * * * *</span>
-                <span class="text-mute text-[11px]">Every 15 minutes</span>
+            </div>
+
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-base font-mono font-bold text-link">? (Question Mark / No Specific Value)</span>
+                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Quartz / AWS</span>
               </div>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Disregards a field's constraint in 6-field schedulers. Because day-of-month and day-of-week can conflict, Quartz and AWS EventBridge require placing <code class="text-white font-mono">?</code> in one of the two day fields.
+              </p>
+            </div>
+
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-base font-mono font-bold text-link">L (Last Day Indicator)</span>
+                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Month End</span>
+              </div>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Specifies the final day of the calendar period. In Day of Month, <code class="text-white font-mono">L</code> calculates the last day of the current month (taking leap years into account). In Day of Week, <code class="text-white font-mono">5L</code> means "the last Friday of the month".
+              </p>
+            </div>
+
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-base font-mono font-bold text-link">W (Nearest Weekday Modifier)</span>
+                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Business Logic</span>
+              </div>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Finds the closest weekday (Monday–Friday) to a given day of the month without jumping across month boundaries. For example, <code class="text-white font-mono">1W</code> triggers on Monday the 3rd if the 1st falls on a Saturday.
+              </p>
+            </div>
+
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-base font-mono font-bold text-link"># (N-th Occurrence of Weekday)</span>
+                <span class="text-[10px] font-mono uppercase bg-canvas-soft-2 px-2 py-0.5 rounded border border-hairline">Ordinal Day</span>
+              </div>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Specifies the Nth occurrence of a weekday in the month. <code class="text-white font-mono">2#1</code> means the 1st Monday of the month, while <code class="text-white font-mono">5#3</code> means the 3rd Thursday of the month.
+              </p>
             </div>
 
           </div>
@@ -348,67 +384,51 @@ const articleSchema = {
             4. Step-by-Step Guide: How to Use CronGen
           </h2>
           <p>
-            CronGen is built specifically to turn the process of writing, parsing, and validating cron expressions into an effortless, visual workflow. Follow this tutorial to generate schedules with 100% confidence:
+            CronGen provides an interactive, visual playground that converts complex crontab requirements into verified, copyable schedule strings in seconds. Here is how to make the most of every feature:
           </p>
 
-          <!-- Tutorial Step Cards -->
           <div class="space-y-6">
             
-            <!-- Step 1 -->
             <div class="bg-canvas-soft border border-hairline rounded-xl p-6 space-y-3">
               <div class="flex items-center gap-3">
-                <span class="w-6 h-6 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">1</span>
-                <h3 class="text-base font-bold text-white">Navigate the Visual Expression Capsules</h3>
+                <span class="w-7 h-7 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">1</span>
+                <h3 class="text-base font-bold text-white">Segment Capsule Isolation</h3>
               </div>
-              <p class="text-xs sm:text-sm text-body leading-relaxed pl-9">
-                At the top of the generator, you will find five interactive capsules representing <strong>Minutes</strong>, <strong>Hours</strong>, <strong>Day of Month</strong>, <strong>Month</strong>, and <strong>Day of Week</strong>. Clicking any capsule highlights it in cyan/blue, focusing the editor on that exact segment without disturbing the rest of the schedule.
+              <p class="text-xs sm:text-sm text-body leading-relaxed pl-10">
+                At the core of CronGen's visual interface are the interactive segment capsules. Clicking on <strong>Minute</strong>, <strong>Hour</strong>, <strong>Day</strong>, <strong>Month</strong>, or <strong>Weekday</strong> illuminates that segment in bright cyan/blue. This lets you inspect and modify a single temporal dimension without accidentally corrupting the rest of the schedule.
               </p>
             </div>
 
-            <!-- Step 2 -->
             <div class="bg-canvas-soft border border-hairline rounded-xl p-6 space-y-3">
               <div class="flex items-center gap-3">
-                <span class="w-6 h-6 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">2</span>
-                <h3 class="text-base font-bold text-white">Choose Quick Presets or Craft Custom Patterns</h3>
+                <span class="w-7 h-7 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">2</span>
+                <h3 class="text-base font-bold text-white">One-Click Quick Presets</h3>
               </div>
-              <p class="text-xs sm:text-sm text-body leading-relaxed pl-9">
-                For routine operations (e.g. <em>Every 5 minutes</em>, <em>Hourly</em>, <em>Daily at Midnight</em>, <em>Every Sunday</em>, <em>First of the Month</em>), click the corresponding preset button for immediate population. If you need custom intervals (e.g., <code class="text-link font-mono bg-canvas-soft-2 px-1 rounded">*/20</code> or <code class="text-link font-mono bg-canvas-soft-2 px-1 rounded">2,4,6</code>), simply type directly into the focused field.
+              <p class="text-xs sm:text-sm text-body leading-relaxed pl-10">
+                Avoid typing common schedules from scratch. The presets bar instantly injects battle-tested patterns for <em>Every Minute</em> (<code class="text-link font-mono">* * * * *</code>), <em>Every 5 Minutes</em> (<code class="text-link font-mono">*/5 * * * *</code>), <em>Hourly</em> (<code class="text-link font-mono">0 * * * *</code>), <em>Daily at Midnight</em> (<code class="text-link font-mono">0 0 * * *</code>), and <em>Every Sunday</em> (<code class="text-link font-mono">0 0 * * 0</code>).
               </p>
             </div>
 
-            <!-- Step 3 -->
             <div class="bg-canvas-soft border border-hairline rounded-xl p-6 space-y-3">
               <div class="flex items-center gap-3">
-                <span class="w-6 h-6 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">3</span>
-                <h3 class="text-base font-bold text-white">Read the Live Plain-English Translation</h3>
+                <span class="w-7 h-7 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">3</span>
+                <h3 class="text-base font-bold text-white">Real-Time Natural Language Translation</h3>
               </div>
-              <p class="text-xs sm:text-sm text-body leading-relaxed pl-9">
-                Directly underneath the expression display, CronGen integrates <code class="text-link font-mono">cronstrue</code> to translate the expression into fluent English in real time. For example, typing <code class="text-white font-mono">0 8 1,15 * 1-5</code> displays:
-                <em class="block mt-2 text-link font-medium bg-canvas-soft-2 p-3 rounded border border-hairline">
-                  “At 08:00 AM, on day 1 and 15 of the month, Monday through Friday”
-                </em>
+              <p class="text-xs sm:text-sm text-body leading-relaxed pl-10">
+                Powered by the <code class="text-link font-mono">cronstrue</code> engine, CronGen automatically parses your expression into clear English as you type. If you input <code class="text-white font-mono">0 9-17 * * 1-5</code>, the banner immediately confirms:
+                <span class="block mt-2 font-mono text-link bg-canvas-soft-2 p-3 rounded border border-hairline text-xs">
+                  “At minute 0, every hour between 09:00 AM and 05:00 PM, Monday through Friday”
+                </span>
               </p>
             </div>
 
-            <!-- Step 4 -->
             <div class="bg-canvas-soft border border-hairline rounded-xl p-6 space-y-3">
               <div class="flex items-center gap-3">
-                <span class="w-6 h-6 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">4</span>
-                <h3 class="text-base font-bold text-white">Inspect the Upcoming Execution Timeline</h3>
+                <span class="w-7 h-7 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">4</span>
+                <h3 class="text-base font-bold text-white">Predictive Execution Timeline Simulator</h3>
               </div>
-              <p class="text-xs sm:text-sm text-body leading-relaxed pl-9">
-                Before putting a script into production, scroll to the <strong>Upcoming Scheduled Runs</strong> card powered by <code class="text-link font-mono">croner</code>. It calculates the exact local and UTC dates/times for the next 5 executions along with relative countdown timers. If the first run is scheduled for a different day than you expected, you will catch it immediately.
-              </p>
-            </div>
-
-            <!-- Step 5 -->
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-6 space-y-3">
-              <div class="flex items-center gap-3">
-                <span class="w-6 h-6 rounded-full bg-link text-white font-mono text-xs font-bold flex items-center justify-center">5</span>
-                <h3 class="text-base font-bold text-white">One-Click Copy & Deployment</h3>
-              </div>
-              <p class="text-xs sm:text-sm text-body leading-relaxed pl-9">
-                Hit the prominent <strong>Copy Cron Expression</strong> button. The validated string is copied to your operating system clipboard, ready to paste directly into your crontab, Dockerfile, or CI/CD workflow file.
+              <p class="text-xs sm:text-sm text-body leading-relaxed pl-10">
+                Never deploy a schedule without checking its upcoming run sequence. CronGen integrates the <code class="text-link font-mono">croner</code> computation engine to simulate and list the exact local and UTC timestamps for the next 5 executions, complete with live relative countdown timers (e.g. <em>"in 14 minutes"</em>).
               </p>
             </div>
 
@@ -416,18 +436,303 @@ const articleSchema = {
         </section>
 
         <!-- Section 5 -->
+        <section id="post-mortems" class="scroll-mt-24 space-y-6">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
+            <span class="w-1.5 h-6 bg-link rounded-full"></span>
+            5. Real-World Case Studies: When Cron Syntax Breaks Production
+          </h2>
+          <p>
+            Examining past production outages reveals why visual validation tools are standard practice across modern engineering teams:
+          </p>
+
+          <div class="space-y-5">
+            
+            <div class="bg-canvas-soft border-l-4 border-error p-6 rounded-r-xl space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
+                  <span class="text-error">Case Study 1:</span> The $40,000 Cloud Function Billing Shock
+                </h3>
+                <span class="text-[10px] font-mono bg-error/10 text-error px-2 py-0.5 rounded border border-error/20">AWS CloudWatch</span>
+              </div>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                A backend developer intended to schedule an inventory sync Lambda function to run once nightly at 2:00 AM. They accidentally configured the CloudWatch cron rule as <code class="text-error font-mono font-bold bg-canvas-soft-2 px-1 rounded">* 2 * * ? *</code> instead of <code class="text-link font-mono font-bold bg-canvas-soft-2 px-1 rounded">0 2 * * ? *</code>.
+              </p>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Because the asterisk represents "every minute", AWS triggered the Lambda 60 times an hour. Compounding the issue, each invocation spawned concurrent batch workers. Within a month, the team incurred over $40,000 in unbudgeted invocation and egress costs before automated anomaly billing alerts flagged the incident.
+              </p>
+              <p class="text-xs text-white font-mono">
+                ✓ Lesson: In visual generators like CronGen, selecting the "Daily" preset automatically enforces <code class="text-link font-mono">0</code> in the minute slot, making this mistake impossible.
+              </p>
+            </div>
+
+            <div class="bg-canvas-soft border-l-4 border-warning p-6 rounded-r-xl space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
+                  <span class="text-warning">Case Study 2:</span> The Black Friday Database Deadlock
+                </h3>
+                <span class="text-[10px] font-mono bg-warning/10 text-warning px-2 py-0.5 rounded border border-warning/20">E-Commerce Postgres</span>
+              </div>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                An e-commerce platform scheduled a database table optimization job every 10 minutes (<code class="text-white font-mono">*/10 * * * *</code>). Under normal traffic, the vacuum script finished in 90 seconds. However, during Black Friday flash traffic, database load caused the script to take 14 minutes.
+              </p>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                At the 10-minute mark, cron faithfully launched a second vacuum process. Both processes competed for the same table locks, freezing checkout queries and dropping the primary database cluster.
+              </p>
+              <p class="text-xs text-white font-mono">
+                ✓ Lesson: Always wrap recurring scripts with non-blocking file locks (<code class="text-link font-mono">flock -n /var/lock/vacuum.lock</code>).
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="production-hardening" class="scroll-mt-24 space-y-6">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
+            <span class="w-1.5 h-6 bg-link rounded-full"></span>
+            6. Production Hardening: Concurrency, Logging & Environment Isolation
+          </h2>
+          <p>
+            Deploying a schedule to production requires defensive operational engineering. Implement these four architectural safeguards:
+          </p>
+
+          <div class="space-y-4">
+            
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-link"></span>
+                1. Prevent Overlapping Executions with flock
+              </h3>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Linux kernel file descriptor locking (<code class="text-link font-mono">flock</code>) provides atomic mutual exclusion:
+              </p>
+              <div class="bg-canvas-soft-2 p-3 rounded font-mono text-xs text-white border border-hairline">
+                */5 * * * * /usr/bin/flock -n /var/lock/etl_sync.lock /opt/scripts/etl_sync.sh
+              </div>
+            </div>
+
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-link"></span>
+                2. Explicit Redirection of stdout and stderr
+              </h3>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Never allow cron jobs to write directly to the default daemon stream. Redirect both streams with append mode:
+              </p>
+              <div class="bg-canvas-soft-2 p-3 rounded font-mono text-xs text-white border border-hairline">
+                0 3 * * * /usr/bin/python3 /opt/report.py &gt;&gt; /var/log/report.log 2&gt;&amp;1
+              </div>
+            </div>
+
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-link"></span>
+                3. Explicit PATH and Environment Declarations
+              </h3>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Add an explicit PATH header at the top of your crontab file to ensure binaries in <code class="text-white font-mono">/usr/local/bin</code> are resolved:
+              </p>
+              <div class="bg-canvas-soft-2 p-3 rounded font-mono text-xs text-white border border-hairline">
+                SHELL=/bin/bash<br />
+                PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin<br />
+                MAILTO=""
+              </div>
+            </div>
+
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
+              <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-link"></span>
+                4. Always Enforce UTC Across System Clocks
+              </h3>
+              <p class="text-xs sm:text-sm text-body leading-relaxed">
+                Avoid local server timezones to prevent the Daylight Saving Time disaster where 2:30 AM tasks are skipped during spring-forward or duplicated during fall-back. Enforce <code class="text-link font-mono">TZ=UTC</code> across all Docker hosts and servers.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="multi-stack-code" class="scroll-mt-24 space-y-6">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
+            <span class="w-1.5 h-6 bg-link rounded-full"></span>
+            7. Multi-Stack Implementation Code Samples
+          </h2>
+          <p>
+            Here is how to integrate your generated cron strings across Python, Node.js, Go, Kubernetes, and GitHub Actions:
+          </p>
+
+          <div class="space-y-5">
+            
+            <!-- Python Sample -->
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-3">
+              <span class="text-xs font-mono font-bold text-white uppercase text-link">Python (APScheduler)</span>
+              <div class="bg-canvas-soft-2 p-4 rounded-lg font-mono text-xs text-white border border-hairline overflow-x-auto">
+<pre>from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
+
+scheduler = BlockingScheduler()
+
+# Generated from CronGen: "At 02:30 AM every day"
+trigger = CronTrigger.from_crontab("30 2 * * *")
+
+@scheduler.scheduled_job(trigger)
+def nightly_backup():
+    print("Executing database backup...")
+
+scheduler.start()</pre>
+              </div>
+            </div>
+
+            <!-- Node.js Sample -->
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-3">
+              <span class="text-xs font-mono font-bold text-white uppercase text-link">Node.js (node-cron)</span>
+              <div class="bg-canvas-soft-2 p-4 rounded-lg font-mono text-xs text-white border border-hairline overflow-x-auto">
+<pre>const cron = require('node-cron');
+
+// Generated from CronGen: "Every 15 minutes, Monday through Friday"
+cron.schedule('*/15 9-17 * * 1-5', () =&gt; &#123;
+  console.log('Running weekday business task:', new Date().toISOString());
+&#125;, &#123;
+  timezone: "UTC"
+&#125;);</pre>
+              </div>
+            </div>
+
+            <!-- Kubernetes Sample -->
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-3">
+              <span class="text-xs font-mono font-bold text-white uppercase text-link">Kubernetes CronJob YAML</span>
+              <div class="bg-canvas-soft-2 p-4 rounded-lg font-mono text-xs text-white border border-hairline overflow-x-auto">
+<pre>apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nightly-cache-purge
+spec:
+  schedule: "0 2 * * *" # Daily at 02:00 AM UTC
+  concurrencyPolicy: Forbid # Prevent overlapping pod execution
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: purge
+            image: redis:alpine
+            command: ["redis-cli", "-h", "cache.internal", "FLUSHDB"]
+          restartPolicy: OnFailure</pre>
+              </div>
+            </div>
+
+            <!-- GitHub Actions Sample -->
+            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-3">
+              <span class="text-xs font-mono font-bold text-white uppercase text-link">GitHub Actions Workflow</span>
+              <div class="bg-canvas-soft-2 p-4 rounded-lg font-mono text-xs text-white border border-hairline overflow-x-auto">
+<pre>name: Weekly Security Audit
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Every Sunday at midnight UTC
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run dependency scanner
+        run: npm audit</pre>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="preflight-checklist" class="scroll-mt-24 space-y-6">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
+            <span class="w-1.5 h-6 bg-link rounded-full"></span>
+            8. The 10-Point Pre-Flight Production Checklist
+          </h2>
+          <p>
+            Before committing a new scheduled job to production, verify each requirement on this diagnostic checklist:
+          </p>
+
+          <div class="overflow-x-auto border border-hairline rounded-xl">
+            <table class="w-full text-left text-xs sm:text-sm font-mono">
+              <thead class="bg-canvas-soft text-white border-b border-hairline">
+                <tr>
+                  <th scope="col" class="py-3 px-4">Checkpoint</th>
+                  <th scope="col" class="py-3 px-4">Rule / Requirement</th>
+                  <th scope="col" class="py-3 px-4">Verification Method</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-hairline bg-canvas-soft/40 text-body">
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">1. Explicit Minute</td>
+                  <td class="py-2.5 px-4">Is minute set to `0` rather than `*` for hourly/daily tasks?</td>
+                  <td class="py-2.5 px-4 text-link">Check field 1</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">2. Trailing Newline</td>
+                  <td class="py-2.5 px-4">Does crontab file end with a blank newline?</td>
+                  <td class="py-2.5 px-4 text-link">`tail -c 1 crontab`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">3. Absolute Paths</td>
+                  <td class="py-2.5 px-4">Are all binary and script references fully qualified paths?</td>
+                  <td class="py-2.5 px-4 text-link">`/usr/bin/node`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">4. Stream Redirection</td>
+                  <td class="py-2.5 px-4">Are stdout and stderr appended to a log file?</td>
+                  <td class="py-2.5 px-4 text-link">`&gt;&gt; /var/log 2&gt;&amp;1`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">5. Concurrency Lock</td>
+                  <td class="py-2.5 px-4">Is flock or mutex active to prevent overlapping runs?</td>
+                  <td class="py-2.5 px-4 text-link">`flock -n /var/lock`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">6. UTC Clock</td>
+                  <td class="py-2.5 px-4">Is the host machine operating on UTC to prevent DST skips?</td>
+                  <td class="py-2.5 px-4 text-link">`timedatectl`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">7. Non-Root User</td>
+                  <td class="py-2.5 px-4">Is the task running under a restricted service account?</td>
+                  <td class="py-2.5 px-4 text-link">`crontab -u appuser`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">8. Dead Man's Snitch</td>
+                  <td class="py-2.5 px-4">Is an external heartbeat monitoring webhook pinged upon success?</td>
+                  <td class="py-2.5 px-4 text-link">`curl -m 10 hc-ping`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">9. Script Permissions</td>
+                  <td class="py-2.5 px-4">Does the executable have appropriate execution bits set?</td>
+                  <td class="py-2.5 px-4 text-link">`chmod 750 script`</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 text-white font-bold">10. Timeline Simulated</td>
+                  <td class="py-2.5 px-4">Have the next 5 execution timestamps been previewed in CronGen?</td>
+                  <td class="py-2.5 px-4 text-link">Check Upcoming Runs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section 9 -->
         <section id="production-recipes" class="scroll-mt-24 space-y-6">
           <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
             <span class="w-1.5 h-6 bg-link rounded-full"></span>
-            5. 10 Production-Ready Cron Recipes
+            9. 12 Battle-Tested Production Recipes
           </h2>
           <p>
-            Here are ten of the most widely used cron patterns in modern backend engineering. Click any expression to copy it:
+            Copy any of these production patterns directly to your clipboard:
           </p>
 
           <div class="space-y-3">
             {[
-              { label: "Every 5 minutes (Health Check / Queue Polling)", expr: "*/5 * * * *", desc: "Runs at minute 0, 5, 10, 15, 20... past every hour." },
+              { label: "Every 5 minutes (Heartbeat & Worker Queue)", expr: "*/5 * * * *", desc: "Runs at minute 0, 5, 10, 15, 20... past every hour." },
               { label: "Every 15 minutes (Cache Invalidation)", expr: "*/15 * * * *", desc: "Runs 4 times per hour around the clock." },
               { label: "Every hour at minute 0", expr: "0 * * * *", desc: "Runs at the top of every hour (01:00, 02:00, etc.)." },
               { label: "Daily database backup at 02:30 AM", expr: "30 2 * * *", desc: "Runs once per day during low-traffic overnight hours." },
@@ -435,8 +740,10 @@ const articleSchema = {
               { label: "Twice daily at 08:00 AM and 08:00 PM", expr: "0 8,20 * * *", desc: "Runs every 12 hours." },
               { label: "Every Sunday at midnight (Weekly Log Rotation)", expr: "0 0 * * 0", desc: "Runs once a week when Sunday begins." },
               { label: "1st of every month at midnight (Monthly Billing)", expr: "0 0 1 * *", desc: "Runs once a month on the first day." },
+              { label: "Bi-weekly payroll on the 1st and 15th at 08:00 AM", expr: "0 8 1,15 * *", desc: "Fires on the 1st and 15th days of every month." },
               { label: "Quarterly maintenance (Jan, Apr, Jul, Oct 1st at 03:00 AM)", expr: "0 3 1 1,4,7,10 *", desc: "Runs at the start of every quarter." },
               { label: "Every 2 hours during business hours (9am - 5pm)", expr: "0 9-17/2 * * 1-5", desc: "Runs at 09:00, 11:00, 13:00, 15:00, 17:00 on weekdays." },
+              { label: "Every 30 minutes during off-peak hours (10pm - 6am)", expr: "*/30 22-23,0-6 * * *", desc: "Executes overnight maintenance cycles." },
             ].map((recipe) => (
               <div class="bg-canvas-soft border border-hairline hover:border-hairline-strong rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group transition-colors">
                 <div class="space-y-1">
@@ -463,157 +770,23 @@ const articleSchema = {
           </div>
         </section>
 
-        <!-- Section 6 -->
-        <section id="common-traps" class="scroll-mt-24 space-y-6">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
-            <span class="w-1.5 h-6 bg-link rounded-full"></span>
-            6. The 4 Most Dangerous Cron Traps
-          </h2>
-          <p>
-            Cron syntax has several subtle corner cases that frequently cause severe production incidents. Here is what to watch out for:
-          </p>
-
-          <div class="space-y-5">
-            
-            <!-- Trap 1 -->
-            <div class="bg-canvas-soft border-l-4 border-error p-5 rounded-r-xl space-y-2">
-              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
-                <span class="text-error">Trap 1:</span> The Minute Asterisk Disaster
-              </h3>
-              <p class="text-xs sm:text-sm text-body leading-relaxed">
-                Writing <code class="text-error font-mono font-bold bg-canvas-soft-2 px-1 rounded">* 2 * * *</code> instead of <code class="text-link font-mono font-bold bg-canvas-soft-2 px-1 rounded">0 2 * * *</code>. The asterisk means <em>every minute</em>. As a result, your task executes 60 times between 2:00 AM and 2:59 AM instead of once! Always ensure you put <code class="text-white font-mono">0</code> in the minute slot when scheduling hourly or daily runs.
-              </p>
-            </div>
-
-            <!-- Trap 2 -->
-            <div class="bg-canvas-soft border-l-4 border-warning p-5 rounded-r-xl space-y-2">
-              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
-                <span class="text-warning">Trap 2:</span> The Day-of-Month vs Day-of-Week OR-Union
-              </h3>
-              <p class="text-xs sm:text-sm text-body leading-relaxed">
-                In standard POSIX crontab, if you specify <strong>both</strong> Day of Month and Day of Week (neither is an asterisk), the cron daemon evaluates them as an <strong>OR condition</strong>, not an AND condition! For example, <code class="text-white font-mono">0 0 15 * 5</code> runs on the 15th of the month <em>AND</em> on every Friday! If you want "Friday the 15th only", you must enforce the check inside your script logic.
-              </p>
-            </div>
-
-            <!-- Trap 3 -->
-            <div class="bg-canvas-soft border-l-4 border-cyan-400 p-5 rounded-r-xl space-y-2">
-              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
-                <span class="text-cyan-400">Trap 3:</span> Server Timezones & Daylight Saving Time (DST)
-              </h3>
-              <p class="text-xs sm:text-sm text-body leading-relaxed">
-                If your host server runs on local time with Daylight Saving Time (e.g. US Eastern or Central European Time), jobs scheduled at 2:30 AM will be <strong>skipped entirely</strong> when clocks spring forward one hour in spring, and <strong>executed twice</strong> when clocks fall back in autumn.
-              </p>
-              <p class="text-xs text-white font-mono">
-                ✓ Best Practice: Always set production servers and container orchestrators to UTC (<code class="text-link font-mono">TZ=UTC</code>).
-              </p>
-            </div>
-
-            <!-- Trap 4 -->
-            <div class="bg-canvas-soft border-l-4 border-violet-400 p-5 rounded-r-xl space-y-2">
-              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
-                <span class="text-violet-400">Trap 4:</span> Stripped Environment & PATH Variables
-              </h3>
-              <p class="text-xs sm:text-sm text-body leading-relaxed">
-                When cron executes a command, it runs in a minimal, stripped shell environment. Binaries like <code class="text-white font-mono">node</code>, <code class="text-white font-mono">python3</code>, or <code class="text-white font-mono">aws</code> located in user folders (<code class="text-white font-mono">/usr/local/bin</code> or <code class="text-white font-mono">~/.nvm</code>) may not be in PATH, resulting in silent <code class="text-error font-mono">command not found</code> failures. Always specify full binary paths or source your profile in crontab.
-              </p>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- Section 7 -->
-        <section id="deploying-cron" class="scroll-mt-24 space-y-6">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
-            <span class="w-1.5 h-6 bg-link rounded-full"></span>
-            7. Deploying Generated Cron Across Tech Stacks
-          </h2>
-          <p>
-            Once you generate your string on CronGen, here is how you install it across different platforms:
-          </p>
-
-          <div class="space-y-4">
-            
-            <!-- Linux Crontab -->
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
-              <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-link"></span>
-                Linux / macOS Crontab
-              </h3>
-              <p class="text-xs text-body">Open crontab in edit mode:</p>
-              <div class="bg-canvas-soft-2 p-3 rounded font-mono text-xs text-white border border-hairline">
-                crontab -e
-              </div>
-              <p class="text-xs text-body">Add your scheduled entry at the bottom:</p>
-              <div class="bg-canvas-soft-2 p-3 rounded font-mono text-xs text-link border border-hairline">
-                30 2 * * * /usr/bin/python3 /opt/scripts/backup.py &gt;&gt; /var/log/backup.log 2&gt;&amp;1
-              </div>
-            </div>
-
-            <!-- GitHub Actions -->
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
-              <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-link"></span>
-                GitHub Actions Workflows
-              </h3>
-              <p class="text-xs text-body">Trigger automated workflows on a schedule inside <code class="text-white font-mono">.github/workflows/scheduled.yml</code>:</p>
-              <div class="bg-canvas-soft-2 p-3 rounded font-mono text-xs text-white border border-hairline overflow-x-auto">
-<pre>on:
-  schedule:
-    - cron: '0 9 * * 1-5' # Weekdays at 9:00 AM UTC
-jobs:
-  report:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4</pre>
-              </div>
-            </div>
-
-            <!-- Kubernetes CronJob -->
-            <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
-              <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-link"></span>
-                Kubernetes CronJob
-              </h3>
-              <p class="text-xs text-body">Define a cloud-native recurring container pod in Kubernetes YAML:</p>
-              <div class="bg-canvas-soft-2 p-3 rounded font-mono text-xs text-white border border-hairline overflow-x-auto">
-<pre>apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: nightly-cache-purge
-spec:
-  schedule: "0 1 * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: purge
-            image: curlimages/curl
-            command: ["curl", "-X", "POST", "https://api.internal/purge"]
-          restartPolicy: OnFailure</pre>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- Section 8: FAQ -->
+        <!-- Section 10: FAQ -->
         <section id="faq" class="scroll-mt-24 space-y-6 border-t border-hairline pt-10">
           <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2 text-balance">
             <span class="w-1.5 h-6 bg-link rounded-full"></span>
-            8. Frequently Asked Questions (FAQ)
+            10. Frequently Asked Questions (FAQ)
           </h2>
 
           <div class="space-y-4">
             <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
-              <h3 class="text-sm font-bold text-white">Can a standard cron expression run every 30 seconds?</h3>
+              <h3 class="text-sm font-bold text-white">Can standard cron run tasks every 30 seconds?</h3>
               <p class="text-xs sm:text-sm text-body leading-relaxed">
-                Standard POSIX/Unix crontab does not support seconds; its minimum resolution is one minute (<code class="text-white font-mono">1m</code>). However, frameworks like Quartz (Java), Spring, or modern runner daemons support 6-field cron expressions with a seconds column. For Unix crontab, running twice a minute is achieved by running two commands with a <code class="text-white font-mono">sleep 30</code> offset.
+                Standard POSIX/Unix crontab does not support seconds; its minimum resolution is one minute (<code class="text-white font-mono">1m</code>). However, frameworks like Quartz (Java), Spring, and Node-cron support 6-field cron expressions with a seconds column. For Unix crontab, running twice a minute is achieved by running two commands with a <code class="text-white font-mono">sleep 30</code> offset.
               </p>
             </div>
 
             <div class="bg-canvas-soft border border-hairline rounded-xl p-5 space-y-2">
-              <h3 class="text-sm font-bold text-white">Is Sunday represented as 0 or 7 in cron?</h3>
+              <h3 class="text-sm font-bold text-white">Is Sunday 0 or 7 in cron?</h3>
               <p class="text-xs sm:text-sm text-body leading-relaxed">
                 Most modern cron parsers (including Linux Vixie cron, cronie, and CronGen) accept both <code class="text-white font-mono">0</code> and <code class="text-white font-mono">7</code> as Sunday, where 1 is Monday and 6 is Saturday. However, POSIX strictly specifies <code class="text-white font-mono">0 = Sunday</code>. To ensure 100% portability across old systems, use <code class="text-white font-mono">0</code> or the named abbreviation <code class="text-white font-mono">SUN</code>.
               </p>

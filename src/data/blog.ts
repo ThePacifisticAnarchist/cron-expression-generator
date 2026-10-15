@@ -27,9 +27,9 @@ export const blogPosts: BlogPost[] = [
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
     },
     publishDate: 'October 15, 2026',
-    readTime: '9 min read',
+    readTime: '14 min read',
     category: 'Guides',
-    tags: ['Crontab', 'Cron Expression', 'DevOps', 'Automation', 'Linux', 'AWS'],
+    tags: ['Crontab', 'Cron Expression', 'DevOps', 'Automation', 'Linux', 'AWS', 'Kubernetes'],
     featured: true,
   },
 ];
